@@ -1,0 +1,8 @@
+Sijoitusrekisteri
+; Kenttien järjestys tiedostossa on seuraava:
+;  |nimi            |palvelu    |ostopäivä   |ostohinta  |ostomäärä  |myyntipäivä|myyntihinta|myyntimäärä|tuotto|
+1  |Bitcoin         |Binance    |14.01.2024  |1000€      |0,004      |16,01,2025 |1500€      |0,004      |500€  |
+2  |Tesla           |nordnet    |14.01.2024  |1000€      |0,004      |16,01,2025 |1500€      |0,004      |500€  |
+3  |                |           |            |           |           |           |           |           |      |
+4  |                |           |            |           |           |           |           |           |      |
+
