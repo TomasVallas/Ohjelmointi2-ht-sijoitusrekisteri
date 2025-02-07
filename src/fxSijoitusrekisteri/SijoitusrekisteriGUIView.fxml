@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fi.jyu.mit.fxgui.ListChooser?>
+<?import fi.jyu.mit.fxgui.StringGrid?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,8 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="fxSijoitusrekisteri.SijoitusrekisteriGUIController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxSijoitusrekisteri.SijoitusrekisteriGUIController">
    <bottom>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -44,7 +44,7 @@
       </MenuBar>
    </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox BorderPane.alignment="CENTER">
          <children>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <top>
@@ -58,11 +58,21 @@
                <top>
                   <Label text="kohteet" BorderPane.alignment="CENTER" />
                </top>
+               <center>
+                  <ListChooser rivit="Nvidia&#10;Tesla&#10;Oracle&#10;" BorderPane.alignment="CENTER" />
+               </center>
             </BorderPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <top>
-                  <Label text="Tapahtumat" BorderPane.alignment="CENTER" />
-               </top>
+            <BorderPane>
+               <center>
+                  <StringGrid emptyStyleClass="" rivit="Osto.pv|ostohinta|määrä|hinta|myynti.pv|myyntihinta|määrä|tuotto|jäljellä&#10;12.01.2025|10€|12|120€|24.01.2025|20€|12|+120|0|&#10;12.01.2025|10€|12|120€|-|-|-|+0|12|&#10;" BorderPane.alignment="CENTER" />
+               </center>
+               <bottom>
+                  <HBox BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Yhteensä: 12kpl" />
+                     </children>
+                  </HBox>
+               </bottom>
             </BorderPane>
          </children>
       </HBox>
