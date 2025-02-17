@@ -18,7 +18,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
          <children>
-            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" onAction="#handleUusiSijoitus" text="Lisää" />
          </children>
       </HBox>
    </bottom>
@@ -27,17 +27,19 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+              <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa" />
+              <MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#handleEitoimiviela" text="About" />
             </items>
           </Menu>
         </menus>
@@ -73,6 +75,9 @@
                      </children>
                   </HBox>
                </bottom>
+               <top>
+                  <Label text="Tapahtumat" BorderPane.alignment="CENTER" />
+               </top>
             </BorderPane>
          </children>
       </HBox>

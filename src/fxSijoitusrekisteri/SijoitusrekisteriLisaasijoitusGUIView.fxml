@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxSijoitusrekisteri.SijoitusrekisteriLisaasijoitusGUIController">
    <bottom>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -21,8 +21,8 @@
             <HBox />
             <ButtonBar prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button defaultButton="true" mnemonicParsing="false" text="OK" />
-                  <Button cancelButton="true" mnemonicParsing="false" text="Cancel" />
+                <Button defaultButton="true" mnemonicParsing="false" onAction="#handleTallenna" text="OK" />
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#handlePeruuta" text="Cancel" />
               </buttons>
                <padding>
                   <Insets right="10.0" />
@@ -70,7 +70,7 @@
                   <TextField text="12" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                   <TextField text="120€" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                   <TextField text="-" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
-                  <TextField text="-" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+                  <TextField text="-testi" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
                   <TextField text="-" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
                   <TextField text="0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
                   <TextField text="12" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" />
