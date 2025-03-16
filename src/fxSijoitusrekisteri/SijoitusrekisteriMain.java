@@ -2,6 +2,7 @@ package fxSijoitusrekisteri;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sijoitusrekisteri.Sijoitusrekisteri;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
@@ -16,18 +17,33 @@ public class SijoitusrekisteriMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("SijoitusrekisteriGUIView.fxml"));
+            final FXMLLoader ldr = new FXMLLoader(getClass().getResource("SijoitusrekisteriGUIView.fxml"));
             final Pane root = ldr.load();
-            //final SijoitusrekisteriGUIController sijoitusrekisteriCtrl = (SijoitusrekisteriGUIController) ldr.getController();
-            Scene scene = new Scene(root);
+            final SijoitusrekisteriGUIController sijoitusrekisteriCtrl = (SijoitusrekisteriGUIController) ldr.getController();
+            
+            
+            final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("sijoitusrekisteri.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("sijoitusrekisteri");
             primaryStage.show();
+        
+        
+        
+        
+        
+            primaryStage.setOnCloseRequest((event) -> {
+                if ( !sijoitusrekisteriCtrl.voikoSulkea() ) event.consume();
+            });
+        
+        Sijoitusrekisteri sijoitusrekisteri = new Sijoitusrekisteri();  
+        sijoitusrekisteriCtrl.setSijoitusrekisteri(sijoitusrekisteri); 
+        
+        primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
         }
-    }
+   }
 
     /**
      * @param args Ei kaytossa
