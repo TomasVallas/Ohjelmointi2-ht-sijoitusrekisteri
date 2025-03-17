@@ -37,20 +37,25 @@ public class Sijoitusrekisteri {
      * <pre name="test">
      * #THROWS SailoException
      * Sijoitusrekisteri sijoitusrekisteri = new Sijoitusrekisteri();
-     * Jasen Bitcoin1 = new Jasen(), Bitcoin2 = new Jasen();
-     * Bitcoin1.rekisteroi(); Bitcoin2.rekisteroi();
-     * sijoitusrekisteri.getJasenia() === 0;
-     * sijoitusrekisteri.lisaa(Bitcoin1); sijoitusrekisteri.getJasenia() === 1;
-     * sijoitusrekisteri.lisaa(Bitcoin2); sijoitusrekisteri.getJasenia() === 2;
-     * sijoitusrekisteri.lisaa(Bitcoin1); sijoitusrekisteri.getJasenia() === 3;
-     * sijoitusrekisteri.getJasenia() === 3;
-     * sijoitusrekisteri.annaJasen(0) === Bitcoin1;
-     * sijoitusrekisteri.annaJasen(1) === Bitcoin2;
-     * sijoitusrekisteri.annaJasen(2) === Bitcoin1;
-     * sijoitusrekisteri.annaJasen(3) === Bitcoin1; #THROWS IndexOutOfBoundsException 
-     * sijoitusrekisteri.lisaa(Bitcoin1); sijoitusrekisteri.getJasenia() === 4;
-     * sijoitusrekisteri.lisaa(Bitcoin1); sijoitusrekisteri.getJasenia() === 5;
-     * sijoitusrekisteri.lisaa(Bitcoin1);            #THROWS SailoException
+     * Sijoitus Binance1 = new Sijoitus(), Binance2 = new Sijoitus();
+     * Binance1.rekisteroi(); Binance2.rekisteroi();
+     * sijoitusrekisteri.getSijoituksia() === 0;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 1;
+     * sijoitusrekisteri.lisaa(Binance2); sijoitusrekisteri.getSijoituksia() === 2;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 3;
+     * sijoitusrekisteri.getSijoituksia() === 3;
+     * sijoitusrekisteri.annaSijoitus(0) === Binance1;
+     * sijoitusrekisteri.annaSijoitus(1) === Binance2;
+     * sijoitusrekisteri.annaSijoitus(2) === Binance1;
+     * sijoitusrekisteri.annaSijoitus(3) === Binance1; #THROWS IndexOutOfBoundsException 
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 4;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 5;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 6;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 7;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 8;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 9;
+     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 10;
+     * sijoitusrekisteri.lisaa(Binance1);            #THROWS SailoException
      * </pre>
      */
     public void lisaa(Sijoitus sijoitus) throws SailoException {
@@ -99,14 +104,14 @@ public class Sijoitusrekisteri {
         try {
             // sijoitusrekisteri.lueTiedostosta("kelmit");
 
-            Sijoitus Bitcoin1 = new Sijoitus(), Bitcoin2 = new Sijoitus();
-            Bitcoin1.rekisteroi();
-            Bitcoin1.vastaaBitcoin();
-            Bitcoin2.rekisteroi();
-            Bitcoin2.vastaaBitcoin();
+            Sijoitus Binance1 = new Sijoitus(), Binance2 = new Sijoitus();
+            Binance1.rekisteroi();
+            Binance1.vastaaBinance();
+            Binance2.rekisteroi();
+            Binance2.vastaaBinance();
 
-            sijoitusrekisteri.lisaa(Bitcoin1);
-            sijoitusrekisteri.lisaa(Bitcoin2);
+            sijoitusrekisteri.lisaa(Binance1);
+            sijoitusrekisteri.lisaa(Binance2);
 
             System.out.println("============= sijoitusrekisterin testi =================");
 

@@ -82,18 +82,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
      * Käsitellään uuden jäsenen lisääminen
      */
     @FXML private void handleUusiSijoitus() {
-        try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("SijoitusrekisteriLisaasijoitusGUIView.fxml"));
-            Pane root = ldr.load();
-            
-            Stage uusiIkkuna = new Stage();
-            uusiIkkuna.setScene(new Scene(root));
-            uusiIkkuna.setTitle("Lisää uusi sijoitus");
-            uusiIkkuna.initModality(Modality.APPLICATION_MODAL); // Estää pääikkunan käytön
-            uusiIkkuna.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        uusiSijoitus();
     }
     
     
@@ -114,12 +103,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     }
 
     
-    /**
-     * Tietojen tallennus
-     */
-//    private void tallenna() {
-//        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
-//    }
+
     
     private Sijoitusrekisteri sijoitusrekisteri;
     private Sijoitus sijoitusKohdalla;
@@ -131,9 +115,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
      * Alustetaan myös sijoituslistan kuuntelija.
      */
     protected void alusta() {
-        panelSijoitus.setContent(areaSijoitus);
-        areaSijoitus.setFont(new Font("Courier New", 12));
-        panelSijoitus.setFitToHeight(true);
+//        panelSijoitus.setContent(areaSijoitus);
+//        areaSijoitus.setFont(new Font("Courier New", 12));
+//        panelSijoitus.setFitToHeight(true);
         
         chooserSijoitukset.clear();
         chooserSijoitukset.addSelectionListener(e -> naytaSijoitus());
@@ -228,13 +212,25 @@ public class SijoitusrekisteriGUIController implements Initializable {
     protected void uusiSijoitus() {
         Sijoitus uusi = new Sijoitus();
         uusi.rekisteroi();
-        uusi.vastaaBitcoin();
+        uusi.vastaaBinance();
         try {
             sijoitusrekisteri.lisaa(uusi);
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
             return;
         }
+        /*       try {
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("SijoitusrekisteriLisaasijoitusGUIView.fxml"));
+            Pane root = ldr.load();
+            
+            Stage uusiIkkuna = new Stage();
+            uusiIkkuna.setScene(new Scene(root));
+            uusiIkkuna.setTitle("Lisää uusi sijoitus");
+            uusiIkkuna.initModality(Modality.APPLICATION_MODAL); // Estää pääikkunan käytön
+            uusiIkkuna.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } */
         hae(uusi.getTunnusNro());
     }
     
@@ -253,7 +249,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     private void avustus() {
         Desktop desktop = Desktop.getDesktop();
         try {
-            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2019k/ht/vesal");
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/v/2025/kevat/ht/valltoha");
             desktop.browse(uri);
         } catch (URISyntaxException | IOException e) {
             return;

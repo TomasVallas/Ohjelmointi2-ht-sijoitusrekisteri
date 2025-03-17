@@ -52,9 +52,9 @@
                <top>
                   <Label text="Palvelut" BorderPane.alignment="CENTER" />
                </top>
-               <center>
-                  <ListChooser rivit="Nordnet&#10;Binance&#10;Nordea&#10;" BorderPane.alignment="CENTER" />
-               </center>
+               <right>
+                  <ListChooser fx:id="chooserSijoitukset" prefHeight="417.0" prefWidth="208.0" rivit="Nordnet&#10;Binance&#10;Nordea&#10;" BorderPane.alignment="CENTER" />
+               </right>
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <top>

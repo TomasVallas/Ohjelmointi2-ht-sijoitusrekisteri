@@ -1,12 +1,13 @@
 package sijoitusrekisteri;
 
+
 /**
  * @author valla
  * @version 16.3.2025
  *
  */
 public class Sijoitukset {
-    private static final int MAX_SIJOITUKSIA   = 100;
+    private static final int MAX_SIJOITUKSIA   = 10;
     private int              lkm           = 0;
     private String           tiedostonNimi = "";
     private Sijoitus            alkiot[]      = new Sijoitus[MAX_SIJOITUKSIA];
@@ -26,21 +27,26 @@ public class Sijoitukset {
      * @example
      * <pre name="test">
      * #THROWS SailoException 
-     * Jasenet sijoitukset = new Sijoitus();
-     * Sijoitus Bitcoin1 = new Sijoitus(), Bitcoin2 = new Sijoitus();
-     * Sijoitukset.getLkm() === 0;
-     * Sijoitukset.lisaa(Bitcoin1); jasenet.getLkm() === 1;
-     * Sijoitukset.lisaa(Bitcoin2); jasenet.getLkm() === 2;
-     * Sijoitukset.lisaa(Bitcoin1); jasenet.getLkm() === 3;
-     * Sijoitukset.anna(0) === Bitcoin1;
-     * Sijoitukset.anna(1) === Bitcoin2;
-     * Sijoitukset.anna(2) === Bitcoin1;
-     * Sijoitukset.anna(1) == Bitcoin1 === false;
-     * Sijoitukset.anna(1) == Bitcoin2 === true;
-     * Sijoitukset.anna(3) === Bitcoin1; #THROWS IndexOutOfBoundsException 
-     * Sijoitukset.lisaa(Bitcoin1); sijoitukset.getLkm() === 4;
-     * Sijoitukset.lisaa(Bitcoin1); sijoitukset.getLkm() === 5;
-     * Sijoitukset.lisaa(Bitcoin1);  #THROWS SailoException
+     * Sijoitukset sijoitukset = new Sijoitukset();
+     * Sijoitus Binance1 = new Sijoitus(), Binance2 = new Sijoitus();
+     * sijoitukset.getLkm() === 0;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 1;
+     * sijoitukset.lisaa(Binance2); sijoitukset.getLkm() === 2;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 3;
+     * sijoitukset.anna(0) === Binance1;
+     * sijoitukset.anna(1) === Binance2;
+     * sijoitukset.anna(2) === Binance1;
+     * sijoitukset.anna(1) == Binance1 === false;
+     * sijoitukset.anna(1) == Binance2 === true;
+     * sijoitukset.anna(3) === Binance1; #THROWS IndexOutOfBoundsException 
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 4;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 5;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 6;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 7;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 8;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 9;
+     * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 10;
+     * sijoitukset.lisaa(Binance1);  #THROWS SailoException
      * </pre>
      */
     public void lisaa(Sijoitus sijoitus) throws SailoException {
@@ -97,15 +103,15 @@ public class Sijoitukset {
     public static void main(String args[]) {
         Sijoitukset sijoitukset = new Sijoitukset();
 
-        Sijoitus Bitcoin = new Sijoitus(), Bitcoin2 = new Sijoitus();
-        Bitcoin.rekisteroi();
-        Bitcoin.vastaaBitcoin();
-        Bitcoin2.rekisteroi();
-        Bitcoin2.vastaaBitcoin();
+        Sijoitus Binance = new Sijoitus(), Binance2 = new Sijoitus();
+        Binance.rekisteroi();
+        Binance.vastaaBinance();
+        Binance.rekisteroi();
+        Binance2.vastaaBinance();
 
         try {
-            sijoitukset.lisaa(Bitcoin);
-            sijoitukset.lisaa(Bitcoin2);
+            sijoitukset.lisaa(Binance);
+            sijoitukset.lisaa(Binance2);
 
             System.out.println("============= Jäsenet testi =================");
 
