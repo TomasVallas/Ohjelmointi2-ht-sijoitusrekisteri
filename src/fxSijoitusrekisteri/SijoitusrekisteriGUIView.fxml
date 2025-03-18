@@ -19,6 +19,7 @@
          </BorderPane.margin>
          <children>
             <Button mnemonicParsing="false" onAction="#handleUusiSijoitus" text="Lisää" />
+            <Button mnemonicParsing="false" onAction="#handleUusiTapahtuma" text="tapahtuma" />
          </children>
       </HBox>
    </bottom>
@@ -61,7 +62,7 @@
                   <Label text="kohteet" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <ListChooser rivit="Nvidia&#10;Tesla&#10;Oracle&#10;" BorderPane.alignment="CENTER" />
+                  <ListChooser fx:id="chooserTapahtumat" rivit="Nvidia&#10;Tesla&#10;Oracle&#10;" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
             <BorderPane>

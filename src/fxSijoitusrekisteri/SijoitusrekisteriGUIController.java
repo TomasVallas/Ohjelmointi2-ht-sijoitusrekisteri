@@ -3,6 +3,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,6 +34,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import sijoitusrekisteri.Sijoitus;
 import sijoitusrekisteri.Sijoitusrekisteri;
+import sijoitusrekisteri.Tapahtuma;
 import sijoitusrekisteri.SailoException;
 
 
@@ -51,6 +53,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelSijoitus;
     @FXML private ListChooser<Sijoitus> chooserSijoitukset;
+    @FXML private ListChooser<Sijoitus> chooserTapahtumat;
     
     private String sijoitusrekisterinnimi = "Sijoitusrekisteri";
     
@@ -66,6 +69,15 @@ public class SijoitusrekisteriGUIController implements Initializable {
      */
     @FXML private void handleEitoimiviela() {
         Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    @FXML private void handleHakuehto() {
+        String hakukentta = cbKentat.getSelectedText();
+        String ehto = hakuehto.getText(); 
+        if ( ehto.isEmpty() )
+            naytaVirhe(null);
+        else
+            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
     }
     
     @FXML private void handlePoista() {
@@ -85,6 +97,8 @@ public class SijoitusrekisteriGUIController implements Initializable {
         uusiSijoitus();
     }
     
+
+
     
     /**
      * Käsitellään tallennuskäsky
@@ -101,12 +115,28 @@ public class SijoitusrekisteriGUIController implements Initializable {
         tallenna();
         Platform.exit();
     }
+    
+    @FXML private void handleUusiTapahtuma() {
+        uusiTapahtuma();  
+    }
+    
+
+//    @FXML private void handleMuokkaaTapahtuma() {
+//        ModalController.showModal(KerhoGUIController.class.getResource("HarrastusDialogView.fxml"), "Harrastus", null, "");
+//    }
+    
+
+    @FXML private void handlePoistaTapahtuma() {
+        Dialogs.showMessageDialog("Ei osata vielä poistaa tapahtumaa");
+    }
+
 
     
 
     
     private Sijoitusrekisteri sijoitusrekisteri;
     private Sijoitus sijoitusKohdalla;
+    private Sijoitus tapahtumaKohdalla;
     private TextArea areaSijoitus = new TextArea();
     
     /**
@@ -120,7 +150,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
 //        panelSijoitus.setFitToHeight(true);
         
         chooserSijoitukset.clear();
-        chooserSijoitukset.addSelectionListener(e -> naytaSijoitus());
+        chooserSijoitukset.addSelectionListener(_ -> naytaSijoitus());
+        chooserTapahtumat.clear();
+        chooserTapahtumat.addSelectionListener(_ -> naytaTapahtuma());
     }
 
 
@@ -191,6 +223,16 @@ public class SijoitusrekisteriGUIController implements Initializable {
         }
     }
     
+    protected void naytaTapahtuma() {
+        tapahtumaKohdalla = chooserTapahtumat.getSelectedObject();
+        if (tapahtumaKohdalla == null) return;
+
+        areaSijoitus.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaSijoitus)) {
+            tapahtumaKohdalla.tulosta(os);
+        }
+    }
+    
     /**
      * Hakee sijoitusten tiedot ja päivittää listan.
      * @param snro sijoituksen numero, joka aktivoidaan haun jälkeen
@@ -234,6 +276,19 @@ public class SijoitusrekisteriGUIController implements Initializable {
         hae(uusi.getTunnusNro());
     }
     
+    /** 
+     * Tekee uuden tyhjän tapahtunman editointia varten 
+     */ 
+    public void uusiTapahtuma() { 
+        if ( sijoitusKohdalla == null ) return;  
+        Tapahtuma tap = new Tapahtuma();  
+        tap.rekisteroi();  
+        tap.vastaaBitcoin(sijoitusKohdalla.getTunnusNro());  
+        sijoitusrekisteri.lisaa(tap);  
+        hae(sijoitusKohdalla.getTunnusNro());          
+    } 
+
+    
     /**
      * Asettaa käytettävän sijoitusrekisterin.
      * @param sijoitusrekisteri sijoitusrekisteri, jota käyttöliittymä käyttää
@@ -241,6 +296,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     public void setSijoitusrekisteri(Sijoitusrekisteri sijoitusrekisteri) {
         this.sijoitusrekisteri = sijoitusrekisteri;
         naytaSijoitus();
+        naytaTapahtuma();
     }
     
     /**
@@ -265,6 +321,10 @@ public class SijoitusrekisteriGUIController implements Initializable {
         os.println("----------------------------------------------");
         sijoitus.tulosta(os);
         os.println("----------------------------------------------");
+        List<Tapahtuma> tapahtumat = sijoitusrekisteri.annaTapahtumat(sijoitus);   
+        for (Tapahtuma tap:tapahtumat)
+            tap.tulosta(os);  
+
     }
     
     /**
