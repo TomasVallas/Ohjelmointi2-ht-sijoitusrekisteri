@@ -7,13 +7,12 @@
     <property name="dir.workspace" value="C:/kurssit/ohj2/ws25"/>
     <property name="dir.jarfile" value="${dir.buildfile}"/>
     <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/sijoitusrekisteri1.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${dir.jarfile}/sijoitusrekisteri2.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="fxSijoitusrekisteri.SijoitusrekisteriMain"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.jarfile}/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/devel/ec2312/eclipse/plugins/org.eclipse.fx.ide.css.jfx8_3.8.0.202204150904.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/devel/jar/Ali.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/devel/jar/fxgui.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/devel/jar/Graphics.jar"/>
