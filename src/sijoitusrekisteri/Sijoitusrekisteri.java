@@ -15,12 +15,21 @@ public class Sijoitusrekisteri {
 
     
     /**
-     * Palautaa kerhon sijoitusmäärän
+     * Palautaa sijoitusrekisterin sijoitusmäärän
      * @return sijoitusmäärä
      */
     public int getSijoituksia() {
         return sijoitukset.getLkm();
     }
+    
+    /**
+     * Palauttaa sijoitusrekisterin tapahtumien määrän
+     * @return tapahtumien määrä
+     */
+    public int getTapahtumia() {
+        return tapahtumat.getLkm();
+    }
+
 
 
     /**

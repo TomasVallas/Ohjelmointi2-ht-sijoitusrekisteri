@@ -53,23 +53,24 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelSijoitus;
     @FXML private ListChooser<Sijoitus> chooserSijoitukset;
-    @FXML private ListChooser<Sijoitus> chooserTapahtumat;
+    @FXML private ListChooser<Tapahtuma> chooserTapahtumat;
+    @FXML private TextArea areaTapahtumat;
     
     private String sijoitusrekisterinnimi = "Sijoitusrekisteri";
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        //
+        alusta();    
     }
     
 
-    
     /**
      * Ei toimi
      */
     @FXML private void handleEitoimiviela() {
         Dialogs.showMessageDialog("Ei toimi vielä");
     }
+    
     
     @FXML private void handleHakuehto() {
         String hakukentta = cbKentat.getSelectedText();
@@ -79,6 +80,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
         else
             naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
     }
+    
+    
+
     
     @FXML private void handlePoista() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
@@ -98,7 +102,10 @@ public class SijoitusrekisteriGUIController implements Initializable {
     }
     
 
-
+    @FXML private void handleApua() {
+        avustus();
+    }
+    
     
     /**
      * Käsitellään tallennuskäsky
@@ -121,9 +128,13 @@ public class SijoitusrekisteriGUIController implements Initializable {
     }
     
 
-//    @FXML private void handleMuokkaaTapahtuma() {
-//        ModalController.showModal(KerhoGUIController.class.getResource("HarrastusDialogView.fxml"), "Harrastus", null, "");
-//    }
+    @FXML private void handleMuokkaaSijoitus() {
+        ModalController.showModal(SijoitusrekisteriGUIController.class.getResource("SijoitusrekisteriLisaaPalvelu.fxml"), "Sijoitus", null, "");
+    }
+    
+    @FXML private void handleMuokkaaTapahtuma() {
+        ModalController.showModal(SijoitusrekisteriGUIController.class.getResource("SijoitusrekisteriLisaasijoitus.fxml"), "Tapahtuma", null, "");
+    }
     
 
     @FXML private void handlePoistaTapahtuma() {
@@ -136,8 +147,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     
     private Sijoitusrekisteri sijoitusrekisteri;
     private Sijoitus sijoitusKohdalla;
-    private Sijoitus tapahtumaKohdalla;
-    private TextArea areaSijoitus = new TextArea();
+    private Tapahtuma tapahtumaKohdalla;
     
     /**
      * Suorittaa tarvittavat alkuvalmistelut. Korvaa aiemman GridPanen
@@ -145,10 +155,6 @@ public class SijoitusrekisteriGUIController implements Initializable {
      * Alustetaan myös sijoituslistan kuuntelija.
      */
     protected void alusta() {
-//        panelSijoitus.setContent(areaSijoitus);
-//        areaSijoitus.setFont(new Font("Courier New", 12));
-//        panelSijoitus.setFitToHeight(true);
-        
         chooserSijoitukset.clear();
         chooserSijoitukset.addSelectionListener(_ -> naytaSijoitus());
         chooserTapahtumat.clear();
@@ -183,16 +189,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
             Dialogs.showMessageDialog(virhe);
     }
     
-//    /**
-//     * Kysyy käyttäjältä tiedoston nimen ja lataa sen.
-//     * @return true, jos lataus onnistui, false muuten
-//     */
-//    public boolean avaa() {
-//        String uusinimi = SijoitusrekisterinNimiController.kysyNimi(null, sijoitusrekisterinnimi);
-//        if (uusinimi == null) return false;
-//        lueTiedosto(uusinimi);
-//        return true;
-//    }
+
     
     /**
      * Tallentaa tiedot.
@@ -215,23 +212,28 @@ public class SijoitusrekisteriGUIController implements Initializable {
      */
     protected void naytaSijoitus() {
         sijoitusKohdalla = chooserSijoitukset.getSelectedObject();
+        
         if (sijoitusKohdalla == null) return;
-
-        areaSijoitus.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaSijoitus)) {
-            sijoitusKohdalla.tulosta(os);
-        }
+        haeT(sijoitusKohdalla.getTunnusNro());
     }
     
+    /**
+     * Näytä listasta valitun tapahtuman tiedot
+     */
     protected void naytaTapahtuma() {
         tapahtumaKohdalla = chooserTapahtumat.getSelectedObject();
+        
         if (tapahtumaKohdalla == null) return;
-
-        areaSijoitus.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaSijoitus)) {
-            tapahtumaKohdalla.tulosta(os);
+        
+        areaTapahtumat.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaTapahtumat)) {
+            tulosta(os, tapahtumaKohdalla);  
         }
+        
     }
+
+    
+
     
     /**
      * Hakee sijoitusten tiedot ja päivittää listan.
@@ -247,6 +249,28 @@ public class SijoitusrekisteriGUIController implements Initializable {
         }
         chooserSijoitukset.setSelectedIndex(index);
     }
+    
+    /**
+     * Hakee sijoitukset tiedot listaan
+     * @param tnro sijoituksen numero, joka aktivoidaan haun jälkeen
+     */
+    protected void haeT(int tnro) {
+        chooserTapahtumat.clear();
+        Sijoitus valittuSijoitus = chooserSijoitukset.getSelectedObject();
+        
+        if (valittuSijoitus == null) return;
+        
+        List<Tapahtuma> tapahtumat = sijoitusrekisteri.annaTapahtumat(valittuSijoitus);
+        
+        int index = 0;
+        for (int i = 0; i < tapahtumat.size(); i++) {
+            Tapahtuma tapahtuma = tapahtumat.get(i);
+            if (tapahtuma.getTunnusNro() == tnro) index = i;
+            chooserTapahtumat.add(tapahtuma.getNimi(), tapahtuma);
+        }
+        chooserTapahtumat.setSelectedIndex(index); 
+    }
+
     
     /**
      * Luo uuden sijoituksen ja lisää sen rekisteriin.
@@ -285,7 +309,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         tap.rekisteroi();  
         tap.vastaaBitcoin(sijoitusKohdalla.getTunnusNro());  
         sijoitusrekisteri.lisaa(tap);  
-        hae(sijoitusKohdalla.getTunnusNro());          
+        haeT(sijoitusKohdalla.getTunnusNro());          
     } 
 
     
@@ -296,7 +320,6 @@ public class SijoitusrekisteriGUIController implements Initializable {
     public void setSijoitusrekisteri(Sijoitusrekisteri sijoitusrekisteri) {
         this.sijoitusrekisteri = sijoitusrekisteri;
         naytaSijoitus();
-        naytaTapahtuma();
     }
     
     /**
@@ -315,30 +338,30 @@ public class SijoitusrekisteriGUIController implements Initializable {
     /**
      * Tulostaa sijoituksen tiedot tietovirtaan.
      * @param os tietovirta
-     * @param sijoitus tulostettava sijoitus
+     * @param tapahtuma tulostettava sijoitus
      */
-    public void tulosta(PrintStream os, final Sijoitus sijoitus) {
+    public void tulosta(PrintStream os, final Tapahtuma tapahtuma) {
         os.println("----------------------------------------------");
-        sijoitus.tulosta(os);
+        tapahtuma.tulosta(os);
         os.println("----------------------------------------------");
-        List<Tapahtuma> tapahtumat = sijoitusrekisteri.annaTapahtumat(sijoitus);   
-        for (Tapahtuma tap:tapahtumat)
-            tap.tulosta(os);  
+//        List<Tapahtuma> tapahtumat = sijoitusrekisteri.annaTapahtumat(sijoitus);   
+//        for (Tapahtuma tap:tapahtumat)
+//            tap.tulosta(os);  
 
     }
     
-    /**
-     * Tulostaa listassa olevat sijoitukset tekstialueeseen.
-     * @param text alue, johon sijoitukset tulostetaan
-     */
-    public void tulostaValitut(TextArea text) {
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
-            os.println("Tulostetaan kaikki sijoitukset");
-            for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
-                Sijoitus sijoitus = sijoitusrekisteri.annaSijoitus(i);
-                tulosta(os, sijoitus);
-                os.println("\n\n");
-            }
-        }
-    }
+//    /**
+//     * Tulostaa listassa olevat sijoitukset tekstialueeseen.
+//     * @param text alue, johon sijoitukset tulostetaan
+//     */
+//    public void tulostaValitut(TextArea text) {
+//        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
+//            os.println("Tulostetaan kaikki sijoitukset");
+//            for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
+//                Sijoitus sijoitus = sijoitusrekisteri.annaSijoitus(i);
+//                tulosta(os, sijoitus);
+//                os.println("\n\n");
+//            }
+//        }
+//    }
 }

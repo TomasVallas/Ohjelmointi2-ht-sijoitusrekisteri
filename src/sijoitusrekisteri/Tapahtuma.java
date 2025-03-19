@@ -124,15 +124,24 @@ public class Tapahtuma {
     public int getSijoitusNro() {
         return sijoitusNro;
     }
+    
+    /**
+     * 
+     * @return tapahtuman nimi
+     */
+    public String getNimi() {
+        return tapahtumannimi;
+    }
+
 
     /**
      * Testiohjelma Harrastukselle.
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        Tapahtuma har = new Tapahtuma();
-        har.vastaaBitcoin(2);
-        har.tulosta(System.out);
+        Tapahtuma tap = new Tapahtuma();
+        tap.vastaaBitcoin(2);
+        tap.tulosta(System.out);
     }
 
     

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -34,13 +35,13 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaSijoitus" text="Muokkaa" />
               <MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleEitoimiviela" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
             </items>
           </Menu>
         </menus>
@@ -73,6 +74,7 @@
                   <HBox BorderPane.alignment="CENTER">
                      <children>
                         <Label text="Yhteensä: 12kpl" />
+                        <TextArea fx:id="areaTapahtumat" />
                      </children>
                   </HBox>
                </bottom>

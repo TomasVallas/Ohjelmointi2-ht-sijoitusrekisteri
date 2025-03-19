@@ -1,6 +1,7 @@
 package fxSijoitusrekisteri;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import sijoitusrekisteri.Sijoitusrekisteri;
 import javafx.scene.Scene;
