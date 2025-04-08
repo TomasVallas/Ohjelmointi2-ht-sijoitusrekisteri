@@ -1,5 +1,6 @@
 package sijoitusrekisteri;
 import java.util.List;
+import java.util.Collection;
 
 /**
  * @author valla
@@ -8,19 +9,19 @@ import java.util.List;
  */
 public class Sijoitusrekisteri {
     
-    private final Sijoitukset sijoitukset = new Sijoitukset();
-    private final Tapahtumat tapahtumat = new Tapahtumat(); 
+    private Sijoitukset sijoitukset = new Sijoitukset();
+    private Tapahtumat tapahtumat = new Tapahtumat(); 
 
     
 
-    
     /**
-     * Palautaa sijoitusrekisterin sijoitusmäärän
-     * @return sijoitusmäärä
+     * Palauttaa sijoitusrekisterin sijoitusten määrän
+     * @return sijoitukset määrä
      */
     public int getSijoituksia() {
         return sijoitukset.getLkm();
     }
+
     
     /**
      * Palauttaa sijoitusrekisterin tapahtumien määrän
@@ -51,49 +52,55 @@ public class Sijoitusrekisteri {
      * #THROWS SailoException
      * Sijoitusrekisteri sijoitusrekisteri = new Sijoitusrekisteri();
      * Sijoitus Binance1 = new Sijoitus(), Binance2 = new Sijoitus();
-     * Binance1.rekisteroi(); Binance2.rekisteroi();
-     * sijoitusrekisteri.getSijoituksia() === 0;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 1;
-     * sijoitusrekisteri.lisaa(Binance2); sijoitusrekisteri.getSijoituksia() === 2;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 3;
-     * sijoitusrekisteri.getSijoituksia() === 3;
-     * sijoitusrekisteri.annaSijoitus(0) === Binance1;
-     * sijoitusrekisteri.annaSijoitus(1) === Binance2;
-     * sijoitusrekisteri.annaSijoitus(2) === Binance1;
-     * sijoitusrekisteri.annaSijoitus(3) === Binance1; #THROWS IndexOutOfBoundsException 
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 4;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 5;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 6;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 7;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 8;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 9;
-     * sijoitusrekisteri.lisaa(Binance1); sijoitusrekisteri.getSijoituksia() === 10;
-     * sijoitusrekisteri.lisaa(Binance1);            #THROWS SailoException
+     * sijoitusrekisteri.lisaa(Binance1);
+     * sijoitusrekisteri.lisaa(Binance2); 
+     * sijoitusrekisteri.lisaa(Binance1); 
+     * Collection<Sijoitus> loytyneet = sijoitusrekisteri.etsi("",-1); 
+     * Iterator<Sijoitus> it = loytyneet.iterator();
+     * it.next() === Binance1;
+     * it.next() === Binance2;
+     * it.next() === Binance1;
      * </pre>
      */
     public void lisaa(Sijoitus sijoitus) throws SailoException {
         sijoitukset.lisaa(sijoitus);
     }
     
+    
+    /**
+     * Palauttaa i:n sijoituksen
+     * @param i monesko sijoius palautetaan
+     * @return viite i:teen sijoitukseen
+     * @throws IndexOutOfBoundsException jos i väärin
+     */
+    public Sijoitus annaSijoitukset(int i) throws IndexOutOfBoundsException {
+        return sijoitukset.anna(i);
+    }
+
+    
+    
     /**
      * Listään uusi tapahtuma sijoitusrekisteriin
      * @param tap lisättävä tapahtuma 
+     * @throws SailoException jos tulee ongelmia
      */
-    public void lisaa(Tapahtuma tap) {
+    public void lisaa(Tapahtuma tap) throws SailoException {
         tapahtumat.lisaa(tap);
     }
 
 
 
-    /**
-     * Palauttaa i:n sijoitusen
-     * @param i monesko sijoitus palautetaan
-     * @return viite i:teen sijoituseen
-     * @throws IndexOutOfBoundsException jos i väärin
-     */
-    public Sijoitus annaSijoitus(int i) throws IndexOutOfBoundsException {
-        return sijoitukset.anna(i);
-    }
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien sijoitusten viitteet 
+     * @param hakuehto hakuehto  
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä sijoituksista 
+     * @throws SailoException Jos jotakin menee väärin
+     */ 
+    public Collection<Sijoitus> etsi(String hakuehto, int k) throws SailoException { 
+        return sijoitukset.etsi(hakuehto, k); 
+    } 
+
     
     /**
      * Haetaan kaikki sijoitus tapahtumat
@@ -101,6 +108,7 @@ public class Sijoitusrekisteri {
      * @return tietorakenne jossa viiteet löydetteyihin  tapahtumiin
      * @example
      * <pre name="test">
+     * #THROWS SailoException
      * #import java.util.*;
      * 
      *  Sijoitusrekisteri sijoitusrekisteri = new Sijoitusrekisteri();
@@ -132,25 +140,38 @@ public class Sijoitusrekisteri {
 
 
 
+
     /**
      * Lukee sijoitusrekisterin tiedot tiedostosta
-     * @param nimi jota käyteään lukemisessa
      * @throws SailoException jos lukeminen epäonnistuu
+     * 
      */
-    public void lueTiedostosta(String nimi) throws SailoException {
-        sijoitukset.lueTiedostosta(nimi);
-        tapahtumat.lueTiedostosta(nimi);
+    public void lueTiedostosta() throws SailoException {
+        sijoitukset.lueTiedostosta();
+        tapahtumat.lueTiedostosta();
     }
 
 
     /**
-     * Tallettaa sijoitusrekisterin tiedot tiedostoon
+     * Tallenttaa kerhon tiedot tiedostoon.  
+     * Vaikka jäsenten tallettamien epäonistuisi, niin yritetään silti tallettaa
+     * harrastuksia ennen poikkeuksen heittämistä.
      * @throws SailoException jos tallettamisessa ongelmia
      */
-    public void talleta() throws SailoException {
-        sijoitukset.talleta();
-        tapahtumat.talleta();
-        // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
+    public void tallenna() throws SailoException {
+        String virhe = "";
+        try {
+            sijoitukset.tallenna();
+        } catch ( SailoException ex ) {
+            virhe = ex.getMessage();
+        }
+
+        try {
+            tapahtumat.tallenna();
+        } catch ( SailoException ex ) {
+            virhe += ex.getMessage();
+        }
+        if ( !"".equals(virhe) ) throw new SailoException(virhe);
     }
 
 
@@ -184,12 +205,14 @@ public class Sijoitusrekisteri {
             System.out.println("============= sijoitusrekisterin testi =================");
 
             for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
-                Sijoitus sijoitus = sijoitusrekisteri.annaSijoitus(i);
+                Sijoitus sijoitus = sijoitusrekisteri.annaSijoitukset(i);
+
                 System.out.println("Sijoitus paikassa: " + i);
                 sijoitus.tulosta(System.out);
                 List<Tapahtuma> loytyneet = sijoitusrekisteri.annaTapahtumat(sijoitus);
                 for (Tapahtuma tapahtuma : loytyneet)
                     tapahtuma.tulosta(System.out);
+                i++;
             }
 
 

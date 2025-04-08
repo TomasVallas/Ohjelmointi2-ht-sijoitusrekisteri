@@ -1,4 +1,11 @@
 package sijoitusrekisteri;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -9,10 +16,12 @@ import java.util.*;
  */
 public class Tapahtumat implements Iterable<Tapahtuma> {
 
-    private String                      tiedostonNimi = "";
+    private boolean muutettu = false;
+    private String tiedostonPerusNimi = "sijoitusrekisteri\\tapahtumat";
+
 
     /** Taulukko harrastuksista */
-    private final Collection<Tapahtuma> alkiot        = new ArrayList<Tapahtuma>();
+    private final Collection<Tapahtuma> alkiot = new ArrayList<Tapahtuma>();
 
 
     /**
@@ -28,27 +37,104 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
      */
     public void lisaa(Tapahtuma tap) {
         alkiot.add(tap);
+        muutettu = true;
     }
  
     /**
-     * Lukee sijoituksien tiedostosta.  
-     * TODO Kesken.
-     * @param hakemisto tiedoston hakemisto
+     * Lukee tapahtumat tiedostosta.  
+     * @param tied tiedoston nimen alkuosa
      * @throws SailoException jos lukeminen epäonnistuu
+     * 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Tapahtumat tapahtumaat = new Tapahtumat();
+     *  Tapahtuma bitcoin21 = new Tapahtuma(); bitcoin21.vastaaBitcoin(2);
+     *  Tapahtuma bitcoin11 = new Tapahtuma(); bitcoin11.vastaaBitcoin(1);
+     *  Tapahtuma bitcoin22 = new Tapahtuma(); bitcoin22.vastaaBitcoin(2); 
+     *  Tapahtuma bitcoin12 = new Tapahtuma(); bitcoin12.vastaaBitcoin(1); 
+     *  Tapahtuma bitcoin23 = new Tapahtuma(); bitcoin23.vastaaBitcoin(2); 
+     *  String tiedNimi = "sijoitusrekisteri\\testitiedosto\\tapahtumatTest";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  //ftied.delete();
+     *  //tapahtumaat.lueTiedostosta(ftied.getName()); #THROWS SailoException
+     *  tapahtumaat.lisaa(bitcoin21);
+     *  tapahtumaat.lisaa(bitcoin11);
+     *  tapahtumaat.lisaa(bitcoin22);
+     *  tapahtumaat.lisaa(bitcoin12);
+     *  tapahtumaat.lisaa(bitcoin23);
+     *  tapahtumaat.tallenna();
+     *  //tapahtumaat = new Tapahtumat();
+     *  tapahtumaat.lueTiedostosta(tiedNimi + ".dat");
+     *  Iterator<Tapahtuma> i = tapahtumaat.iterator();
+     *  i.next().toString() === bitcoin21.toString();
+     *  i.next().toString() === bitcoin11.toString();
+     *  i.next().toString() === bitcoin22.toString();
+     *  i.next().toString() === bitcoin12.toString();
+     *  i.next().toString() === bitcoin23.toString();
+     *  i.hasNext() === false;
+     *  tapahtumaat.lisaa(bitcoin23);
+     *  tapahtumaat.tallenna();
+     *  ftied.delete() === true;
+     * </pre>
      */
-    public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + ".tap";
-        throw new SailoException("Ei osata vielä lukea tiedostoa " + tiedostonNimi);
+
+    public void lueTiedostosta(String tied) throws SailoException {
+        try ( BufferedReader fi = new BufferedReader(new FileReader(tied)) ) {
+
+            String rivi;
+            while ( (rivi = fi.readLine()) != null ) {
+                rivi = rivi.trim();
+                if ( "".equals(rivi) || rivi.charAt(0) == ';' ) continue;
+                Tapahtuma tap = new Tapahtuma();
+                tap.parse(rivi); // voisi olla virhekäsittely
+                lisaa(tap);
+            }
+            muutettu = false;
+
+        } catch ( FileNotFoundException e ) {
+            throw new SailoException("Tiedosto " + tied + " ei aukea");
+        } catch ( IOException e ) {
+            throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Luetaan aikaisemmin annetun nimisestä tiedostosta
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void lueTiedostosta() throws SailoException {
+        lueTiedostosta(getTiedostonNimi());
     }
 
+
+
     /**
-     * Tallentaa sijoituksien tiedostoon.  
-     * TODO Kesken.
+     * Tallentaa tapahtuman tiedostoon.
      * @throws SailoException jos talletus epäonnistuu
      */
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
+    public void tallenna() throws SailoException {
+        if ( !muutettu ) return;
+
+        File fbak = new File(getBakNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete(); //  if ... System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbak); //  if ... System.err.println("Ei voi nimetä");
+
+        try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
+            for (Tapahtuma tap : this) {
+                fo.println(tap.toString());
+            }
+        } catch ( FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto " + ftied.getName() + " ei aukea");
+        } catch ( IOException ex ) {
+            throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
+        }
+
+        muutettu = false;
     }
+
 
     /**
      * Palauttaa Sijoitusrekisterin tapahtumien lukumäärän
@@ -57,6 +143,34 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
     public int getLkm() {
         return alkiot.size();
     }
+    
+//    /**
+//     * Asettaa tiedoston perusnimen ilan tarkenninta
+//     * @param tied tallennustiedoston perusnimi
+//     */
+//    public void setTiedostonPerusNimi(String tied) {
+//        tiedostonPerusNimi = tied;
+//    }
+    
+
+    
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return tiedostonPerusNimi + ".dat";
+    }
+
+    /**
+     * Palauttaa varakopiotiedoston nimen
+     * @return varakopiotiedoston nimi
+     */
+    public String getBakNimi() {
+        return tiedostonPerusNimi + ".bak";
+    }
+
+
 
     /**
      * Iteraattori kaikkien harrastusten läpikäymiseen

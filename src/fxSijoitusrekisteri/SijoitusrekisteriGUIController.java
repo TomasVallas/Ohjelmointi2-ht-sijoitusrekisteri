@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.List;
+import java.util.Collection;
 import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -55,8 +56,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private ListChooser<Sijoitus> chooserSijoitukset;
     @FXML private ListChooser<Tapahtuma> chooserTapahtumat;
     @FXML private TextArea areaTapahtumat;
+    @FXML private TextArea areaSijoitus;
     
-    private String sijoitusrekisterinnimi = "Sijoitusrekisteri";
+
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -73,12 +75,8 @@ public class SijoitusrekisteriGUIController implements Initializable {
     
     
     @FXML private void handleHakuehto() {
-        String hakukentta = cbKentat.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
+        if ( sijoitusKohdalla != null )
+            hae(sijoitusKohdalla.getTunnusNro());
     }
     
     
@@ -95,7 +93,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     }
 
     /**
-     * Käsitellään uuden jäsenen lisääminen
+     * Käsitellään uuden sijoituksen lisääminen
      */
     @FXML private void handleUusiSijoitus() {
         uusiSijoitus();
@@ -144,7 +142,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
 
     
 
-    
+
     private Sijoitusrekisteri sijoitusrekisteri;
     private Sijoitus sijoitusKohdalla;
     private Tapahtuma tapahtumaKohdalla;
@@ -163,40 +161,54 @@ public class SijoitusrekisteriGUIController implements Initializable {
 
 
     
-    private void naytaVirhe(String virhe) {
-        if (virhe == null || virhe.isEmpty()) {
-            labelVirhe.setText("");
-            labelVirhe.getStyleClass().removeAll("virhe");
-            return;
-        }
-        labelVirhe.setText(virhe);
-        labelVirhe.getStyleClass().add("virhe");
-    }
+//    private void naytaVirhe(String virhe) {
+//        if (virhe == null || virhe.isEmpty()) {
+//            labelVirhe.setText("");
+//            labelVirhe.getStyleClass().removeAll("virhe");
+//            return;
+//        }
+//        labelVirhe.setText(virhe);
+//        labelVirhe.getStyleClass().add("virhe");
+//    }
     
-    private void setTitle(String title) {
-        ModalController.getStage(hakuehto).setTitle(title);
-    }
+
     
     /**
      * Lataa sijoitusrekisterin tiedot annetusta tiedostosta.
-     * @param nimi tiedoston nimi
+     * @return null jos onnistuu, muuten virhe tekstinä
      */
-    protected void lueTiedosto(String nimi) {
-        sijoitusrekisterinnimi = nimi;
-        setTitle("Sijoitusrekisteri - " + sijoitusrekisterinnimi);
-        String virhe = "Ei osata lukea vielä";  // TODO: toteuta tiedoston luku
-        // if (virhe != null)            
-            Dialogs.showMessageDialog(virhe);
-    }
+    protected String lueTiedosto() {
+        try {
+            sijoitusrekisteri.lueTiedostosta();
+            hae(0);
+            haeT(0);
+            return null;
+        } catch (SailoException e) {
+            hae(0);
+            haeT(0);
+            String virhe = e.getMessage(); 
+            if ( virhe != null ) Dialogs.showMessageDialog(virhe);
+            return virhe;
+        }
+     }
+
     
 
     
     /**
      * Tallentaa tiedot.
+     * @return null jos onnistuu, muuten virhe tekstinä
      */
-    private void tallenna() {
-        Dialogs.showMessageDialog("Tallennetaan! Mutta ei toimi vielä");
+    private String tallenna() {
+        try {
+            sijoitusrekisteri.tallenna();
+            return null;
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
+            return ex.getMessage();
+        }
     }
+
     
     /**
      * Tarkistaa, onko tallennus tehty.
@@ -207,6 +219,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         return true;
     }
     
+    
     /**
      * Näyttää listasta valitun sijoituksen tiedot tekstialueella.
      */
@@ -214,8 +227,10 @@ public class SijoitusrekisteriGUIController implements Initializable {
         sijoitusKohdalla = chooserSijoitukset.getSelectedObject();
         
         if (sijoitusKohdalla == null) return;
+//        areaSijoitus.setText("");
         haeT(sijoitusKohdalla.getTunnusNro());
     }
+    
     
     /**
      * Näytä listasta valitun tapahtuman tiedot
@@ -232,18 +247,17 @@ public class SijoitusrekisteriGUIController implements Initializable {
         
     }
 
-    
-
-    
+        
     /**
      * Hakee sijoitusten tiedot ja päivittää listan.
      * @param snro sijoituksen numero, joka aktivoidaan haun jälkeen
      */
     protected void hae(int snro) {
         chooserSijoitukset.clear();
+        
         int index = 0;
         for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
-            Sijoitus sijoitus = sijoitusrekisteri.annaSijoitus(i);
+            Sijoitus sijoitus = sijoitusrekisteri.annaSijoitukset(i);
             if (sijoitus.getTunnusNro() == snro) index = i;
             chooserSijoitukset.add(sijoitus.getsijoitusNimi(), sijoitus);
         }
@@ -308,7 +322,11 @@ public class SijoitusrekisteriGUIController implements Initializable {
         Tapahtuma tap = new Tapahtuma();  
         tap.rekisteroi();  
         tap.vastaaBitcoin(sijoitusKohdalla.getTunnusNro());  
-        sijoitusrekisteri.lisaa(tap);  
+        try {
+            sijoitusrekisteri.lisaa(tap);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia lisäämisessä! " + e.getMessage());
+        }         
         haeT(sijoitusKohdalla.getTunnusNro());          
     } 
 
@@ -344,10 +362,6 @@ public class SijoitusrekisteriGUIController implements Initializable {
         os.println("----------------------------------------------");
         tapahtuma.tulosta(os);
         os.println("----------------------------------------------");
-//        List<Tapahtuma> tapahtumat = sijoitusrekisteri.annaTapahtumat(sijoitus);   
-//        for (Tapahtuma tap:tapahtumat)
-//            tap.tulosta(os);  
-
     }
     
 //    /**

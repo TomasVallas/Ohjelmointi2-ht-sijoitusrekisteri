@@ -1,6 +1,7 @@
 package sijoitusrekisteri;
 import java.io.*;
 import java.util.Random;
+import fi.jyu.mit.ohj2.Mjonot;
 
 /**
  * @author valla
@@ -37,7 +38,7 @@ public class Sijoitus {
         Random rand = new Random();
         int rand_int1 = rand.nextInt(9999);
         
-        sijoituksennimi = "Binance" + rand_int1;
+        sijoituksennimi = "Binance " + rand_int1;
     }
         
     /**
@@ -84,6 +85,75 @@ public class Sijoitus {
     public int getTunnusNro() {
         return tunnusNro;
     }
+    
+    /**
+     * Asettaa tunnusnumeron ja samalla varmistaa että
+     * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+     * @param nr asetettava tunnusnumero
+     */
+    private void setTunnusNro(int nr) {
+        tunnusNro = nr;
+        if (tunnusNro >= seuraavaNro) seuraavaNro = tunnusNro + 1;
+    }
+    
+
+    /**
+     * Palauttaa sijoituksen tiedot merkkijonona jonka voi tallentaa tiedostoon.
+     * @return sijoitus tolppaeroteltuna merkkijonona 
+     * @example
+     * <pre name="test">
+     *   Sijoitus sijoitus = new Sijoitus();
+     *   sijoitus.parse("3|Binance1234");
+     *   sijoitus.getTunnusNro() === 3;
+     *   sijoitus.getsijoitusNimi() === "Binance1234";
+     *   sijoitus.toString().startsWith("3|Binance1234") === true;
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return "" + getTunnusNro() + "|" + sijoituksennimi;
+    }
+
+
+    /**
+     * Selvitää sijoituksen tiedot | erotellusta merkkijonosta
+     * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusNro.
+     * @param rivi josta sijoituksen tiedot otetaan
+     * 
+     * @example
+     * <pre name="test">
+     *   Sijoitus sijoitus = new Sijoitus();
+     *   sijoitus.parse("3|Binance1234");
+     *   sijoitus.getTunnusNro() === 3;
+     *   sijoitus.toString().startsWith("3|Binance1234") === true;
+     *
+     *   sijoitus.rekisteroi();
+     *   int n = sijoitus.getTunnusNro();
+     *   sijoitus.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
+     *   sijoitus.rekisteroi();           // ja tarkistetaan että seuraavalla kertaa tulee yhtä isompi
+     *   sijoitus.getTunnusNro() === n+20+1;
+     *     
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+        sijoituksennimi = Mjonot.erota(sb, '|', sijoituksennimi);
+    }
+    
+    
+    @Override
+    public boolean equals(Object sijoitus) {
+        if ( sijoitus == null ) return false;
+        return this.toString().equals(sijoitus.toString());
+    }
+
+
+    @Override
+    public int hashCode() {
+        return tunnusNro;
+    }
+
     
     /**
      * Testiohjelma sijoituksille.

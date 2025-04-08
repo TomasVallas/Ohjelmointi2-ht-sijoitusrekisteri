@@ -1,6 +1,7 @@
 package sijoitusrekisteri;
 import java.io.*;
 import java.util.Random;
+import fi.jyu.mit.ohj2.Mjonot;
 
 
 
@@ -132,10 +133,88 @@ public class Tapahtuma {
     public String getNimi() {
         return tapahtumannimi;
     }
+    
+    /**
+     * Asettaa tunnusnumeron ja samalla varmistaa että
+     * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+     * @param nr asetettava tunnusnumero
+     */
+    private void setTunnusNro(int nr) {
+        tunnusNro = nr;
+        if ( tunnusNro >= seuraavaNro ) seuraavaNro = tunnusNro + 1;
+    }
+
 
 
     /**
-     * Testiohjelma Harrastukselle.
+     * Palauttaa tapahtuman tiedot merkkijonona, jonka voi tallentaa tiedostoon.
+     * @return tapahtuma tolppaeroteltuna merkkijonona 
+     * @example
+     * <pre name="test">
+     *   Tapahtuma tapahtuma = new Tapahtuma();
+     *   tapahtuma.parse("2|10|Bitcoin|20200101|35000|2|40000|20210101|45000|1|10000|1");
+     *   tapahtuma.getSijoitusNro() === 10;
+     *   tapahtuma.toString() === "2|10|Bitcoin|20200101|35000|2|40000|20210101|45000|1|10000|1";
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return "" + getTunnusNro() + "|" + sijoitusNro + "|" + tapahtumannimi + "|" + ostopv + "|" + ostohinta + "|" + ostomaara + "|" + kurssi + "|" + myyntipv + "|" + myyntikurssi + "|" + myyntimaara + "|" + tuotto + "|" + jaljella;
+    }
+
+
+    /**
+     * Selvitää tapahtuman tiedot |-erotellusta merkkijonosta.
+     * Pitää huolen, että seuraavaNro on suurempi kuin tuleva tunnusnro.
+     * @param rivi josta tapahtuman tiedot otetaan
+     * @example
+     * <pre name="test">
+     *   Tapahtuma tapahtuma = new Tapahtuma();
+     *   tapahtuma.parse("2|10|Bitcoin|20200101|35000|2|40000|20210101|45000|1|10000|1");
+     *   tapahtuma.getSijoitusNro() === 10;
+     *   tapahtuma.toString() === "2|10|Bitcoin|20200101|35000|2|40000|20210101|45000|1|10000|1";
+     *   
+     *   tapahtuma.rekisteroi();
+     *   int n = tapahtuma.getTunnusNro();
+     *   tapahtuma.parse((n+20) + "|10|Bitcoin|20200101|35000|2|40000|20210101|45000|1|10000|1");
+     *   tapahtuma.rekisteroi();
+     *   tapahtuma.getTunnusNro() === n+20+1;
+     *   tapahtuma.toString() === "" + (n+20+1) + "|10|Bitcoin|20200101|35000|2|40000|20210101|45000|1|10000|1";
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+        sijoitusNro    = Mjonot.erota(sb, '|', sijoitusNro);
+        tapahtumannimi = Mjonot.erota(sb, '|', tapahtumannimi);
+        ostopv         = Mjonot.erota(sb, '|', ostopv);
+        ostohinta      = Mjonot.erota(sb, '|', ostohinta);
+        ostomaara      = Mjonot.erota(sb, '|', ostomaara);
+        kurssi         = Mjonot.erota(sb, '|', kurssi);
+        myyntipv       = Mjonot.erota(sb, '|', myyntipv);
+        myyntikurssi   = Mjonot.erota(sb, '|', myyntikurssi);
+        myyntimaara    = Mjonot.erota(sb, '|', myyntimaara);
+        tuotto         = Mjonot.erota(sb, '|', tuotto);
+        jaljella       = Mjonot.erota(sb, '|', jaljella);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if ( obj == null ) return false;
+        return this.toString().equals(obj.toString());
+    }
+    
+
+    @Override
+    public int hashCode() {
+        return tunnusNro;
+    }
+
+    
+
+    /**
+     * Testiohjelma Tapahtumalle.
      * @param args ei käytössä
      */
     public static void main(String[] args) {

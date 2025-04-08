@@ -37,14 +37,15 @@ public class SijoitusrekisteriMain extends Application {
                 if ( !sijoitusrekisteriCtrl.voikoSulkea() ) event.consume();
             });
         
-        Sijoitusrekisteri sijoitusrekisteri = new Sijoitusrekisteri();  
-        sijoitusrekisteriCtrl.setSijoitusrekisteri(sijoitusrekisteri); 
-        
-        primaryStage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-   }
+            Sijoitusrekisteri sijoitusrekisteri = new Sijoitusrekisteri();  
+            sijoitusrekisteriCtrl.setSijoitusrekisteri(sijoitusrekisteri); 
+            sijoitusrekisteriCtrl.lueTiedosto();
+            
+            primaryStage.show();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+       }
 
     /**
      * @param args Ei kaytossa
