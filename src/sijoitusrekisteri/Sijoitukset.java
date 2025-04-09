@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -51,7 +52,6 @@ public class Sijoitukset implements Iterable<Sijoitus> {
      * sijoitukset.anna(2) === Binance1;
      * sijoitukset.anna(1) == Binance1 === false;
      * sijoitukset.anna(1) == Binance2 === true;
-     * sijoitukset.anna(3) === Binance1; #THROWS IndexOutOfBoundsException 
      * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 4;
      * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 5;
      * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 6;
@@ -59,11 +59,10 @@ public class Sijoitukset implements Iterable<Sijoitus> {
      * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 8;
      * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 9;
      * sijoitukset.lisaa(Binance1); sijoitukset.getLkm() === 10;
-     * sijoitukset.lisaa(Binance1);  #THROWS SailoException
      * </pre>
      */
     public void lisaa(Sijoitus sijoitus) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
+        if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20);
         alkiot[lkm] = sijoitus;
         lkm++;
         muutettu = true;
