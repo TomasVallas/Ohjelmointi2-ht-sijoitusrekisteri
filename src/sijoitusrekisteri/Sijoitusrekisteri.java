@@ -76,6 +76,14 @@ public class Sijoitusrekisteri {
     public Sijoitus annaSijoitukset(int i) throws IndexOutOfBoundsException {
         return sijoitukset.anna(i);
     }
+    
+    /**
+     * @param sijoitus sijoitus jonka nimeä muutetaan
+     * @param uusiSijoitusNimi nimi joka muokatessa annetaan sijoitukselle
+     */
+    public void muutaSijoitusNimi(Sijoitus sijoitus, String uusiSijoitusNimi) {
+        sijoitukset.muutaNimi(sijoitus, uusiSijoitusNimi);
+    }
 
     
     

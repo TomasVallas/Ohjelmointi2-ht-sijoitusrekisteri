@@ -57,6 +57,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private ListChooser<Tapahtuma> chooserTapahtumat;
     @FXML private TextArea areaTapahtumat;
     @FXML private TextArea areaSijoitus;
+    @FXML private TextField editNimi; 
     
 
     
@@ -96,7 +97,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
      * Käsitellään uuden sijoituksen lisääminen
      */
     @FXML private void handleUusiSijoitus() {
-        uusiSijoitus();
+        String uusiSijoitusNimi = Dialogs.showInputDialog("Anna palvelun nimi", "");
+        if (uusiSijoitusNimi == null) return;
+        uusiSijoitus(uusiSijoitusNimi);
     }
     
 
@@ -127,7 +130,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
     
 
     @FXML private void handleMuokkaaSijoitus() {
-        ModalController.showModal(SijoitusrekisteriGUIController.class.getResource("SijoitusrekisteriLisaaPalvelu.fxml"), "Sijoitus", null, "");
+        String uusiSijoitusNimi = Dialogs.showInputDialog("Muuta palvelun nimeä", chooserSijoitukset.getSelectedObject().getsijoitusNimi());
+        if (uusiSijoitusNimi == null) return;
+        muokkaa(uusiSijoitusNimi);
     }
     
     @FXML private void handleMuokkaaTapahtuma() {
@@ -146,6 +151,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     private Sijoitusrekisteri sijoitusrekisteri;
     private Sijoitus sijoitusKohdalla;
     private Tapahtuma tapahtumaKohdalla;
+    private TextField edits[]; 
     
     /**
      * Suorittaa tarvittavat alkuvalmistelut. Korvaa aiemman GridPanen
@@ -157,6 +163,8 @@ public class SijoitusrekisteriGUIController implements Initializable {
         chooserSijoitukset.addSelectionListener(_ -> naytaSijoitus());
         chooserTapahtumat.clear();
         chooserTapahtumat.addSelectionListener(_ -> naytaTapahtuma());
+        
+        edits = new TextField[]{editNimi}; 
     }
 
 
@@ -228,7 +236,8 @@ public class SijoitusrekisteriGUIController implements Initializable {
         
         if (sijoitusKohdalla == null) return;
 //        areaSijoitus.setText("");
-        haeT(sijoitusKohdalla.getTunnusNro());
+       haeT(sijoitusKohdalla.getTunnusNro());
+       
     }
     
     
@@ -288,11 +297,12 @@ public class SijoitusrekisteriGUIController implements Initializable {
     
     /**
      * Luo uuden sijoituksen ja lisää sen rekisteriin.
+     * @param SijoitusksenNimi uusi sijoitus
      */
-    protected void uusiSijoitus() {
+    protected void uusiSijoitus(String SijoitusksenNimi) {
         Sijoitus uusi = new Sijoitus();
         uusi.rekisteroi();
-        uusi.vastaaBinance();
+        uusi.muutaNimi(SijoitusksenNimi);
         try {
             sijoitusrekisteri.lisaa(uusi);
         } catch (SailoException e) {
@@ -329,6 +339,25 @@ public class SijoitusrekisteriGUIController implements Initializable {
         }         
         haeT(sijoitusKohdalla.getTunnusNro());          
     } 
+    
+//    private void muokkaa(String uusiSijoitusNimi) {
+//        if (sijoitusKohdalla == null) return;
+//        try {
+//            Sijoitus sijoitus;
+//            sijoitus = sijoitusKohdalla.clone();
+//            if (sijoitus == null) return;
+//            sijoitusrekisteri.muutaSijoitusNimi(sijoitus, uusiSijoitusNimi);
+//            hae(sijoitus.getTunnusNro());
+//        } catch (CloneNotSupportedException e) {
+//            //
+//        }
+//    }
+    
+    private void muokkaa(String uusiSijoitusNimi) {
+        if (sijoitusKohdalla == null) return;
+        sijoitusKohdalla.muutaNimi(uusiSijoitusNimi); // tai setNimi(...)
+        hae(sijoitusKohdalla.getTunnusNro()); // päivitä näkymä
+    }
 
     
     /**

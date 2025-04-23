@@ -29,6 +29,14 @@ public class Sijoitus {
         return sijoituksennimi;
     }
     
+    /**
+     * @param uusiSijoitusNimi nimi joksi sijoituksen nimi muutetaan
+     */
+    public void muutaNimi(String uusiSijoitusNimi) {
+        sijoituksennimi = uusiSijoitusNimi;
+    }
+    
+
  
     
     /**
@@ -152,6 +160,13 @@ public class Sijoitus {
     @Override
     public int hashCode() {
         return tunnusNro;
+    }
+    
+    @Override
+    public Sijoitus clone() throws CloneNotSupportedException {
+        Sijoitus uusi;
+        uusi = (Sijoitus) super.clone();
+        return uusi;
     }
 
     

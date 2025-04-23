@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxSijoitusrekisteri.SijoitusrekisteriLisaasijoitusGUIController">
    <bottom>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -21,8 +21,8 @@
             <HBox />
             <ButtonBar prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button defaultButton="true" mnemonicParsing="false" onAction="#handleTallenna" text="OK" />
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#handlePeruuta" text="Cancel" />
+                <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOK" text="OK" />
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
               </buttons>
                <padding>
                   <Insets right="10.0" />
@@ -46,9 +46,7 @@
                </rowConstraints>
                <children>
                   <Label text="Palvelu" />
-                  <Label text="testi" GridPane.rowIndex="1" />
-                  <TextField text="Binance" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                  <TextField text="-testi" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                  <TextField fx:id="editNimi" text="Binance" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
                </children>
                <opaqueInsets>
                   <Insets left="10.0" top="10.0" />

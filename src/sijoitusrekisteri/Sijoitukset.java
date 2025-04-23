@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import fi.jyu.mit.fxgui.Dialogs;
+
 
 /**
  * @author valla
@@ -66,6 +68,26 @@ public class Sijoitukset implements Iterable<Sijoitus> {
         alkiot[lkm] = sijoitus;
         lkm++;
         muutettu = true;
+    }
+    
+    /**
+     * @param sijoitus sijoitus, jonka nimeä muutetaan
+     * @param uusiSijoitusNimi sijoituksen uusi nimi
+     */
+    public void muutaNimi(Sijoitus sijoitus, String uusiSijoitusNimi) {
+        int nro = sijoitus.getTunnusNro();
+        for (int i = 0; i < lkm; i++) {
+            if (alkiot[i].getTunnusNro() == nro) {
+                alkiot[i].muutaNimi(uusiSijoitusNimi);
+                muutettu = true;
+                return;                
+            }
+        }
+        try {
+            lisaa(sijoitus);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog(e.getMessage());
+        }
     }
     
     /**
