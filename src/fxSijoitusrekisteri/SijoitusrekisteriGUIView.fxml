@@ -19,8 +19,13 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
          <children>
-            <Button mnemonicParsing="false" onAction="#handleUusiSijoitus" text="Lisää" />
-            <Button mnemonicParsing="false" onAction="#handleUusiTapahtuma" text="tapahtuma" />
+            <Button mnemonicParsing="false" onAction="#handleUusiSijoitus" text="Uusi palvelu" />
+            <Button mnemonicParsing="false" onAction="#handleUusiTapahtuma" text="Uusi tapahtuma" />
+            <Label fx:id="labelYhteensa" text="Yhteensä: 12kpl">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
          </children>
       </HBox>
    </bottom>
@@ -42,7 +47,7 @@
             <Menu mnemonicParsing="false" text="Poista">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#handlePoistaSijoitus" text="Poista palvelu" />
-                  <MenuItem mnemonicParsing="false" text="Poista tapahtuma" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaTapahtuma" text="Poista tapahtuma" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -66,7 +71,7 @@
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <top>
-                  <Label text="kohteet" BorderPane.alignment="CENTER" />
+                  <Label text="Kohteet" BorderPane.alignment="CENTER" />
                </top>
                <center>
                   <ListChooser fx:id="chooserTapahtumat" rivit="Nvidia&#10;Tesla&#10;Oracle&#10;" BorderPane.alignment="CENTER" />
@@ -74,15 +79,10 @@
             </BorderPane>
             <BorderPane>
                <center>
-                  <StringGrid emptyStyleClass="" rivit="Osto.pv|ostohinta|määrä|hinta|myynti.pv|myyntihinta|määrä|tuotto|jäljellä&#10;12.01.2025|10€|12|120€|24.01.2025|20€|12|+120|0|&#10;12.01.2025|10€|12|120€|-|-|-|+0|12|&#10;" BorderPane.alignment="CENTER" />
+                  <StringGrid fx:id="tapahtumaGrid" emptyStyleClass="" rivit="Osto.pv|ostohinta|määrä|hinta|myynti.pv|myyntihinta|määrä|tuotto|jäljellä&#10;12.01.2025|10€|12|120€|24.01.2025|20€|12|+120|0|&#10;12.01.2025|10€|12|120€|-|-|-|+0|12|&#10;" BorderPane.alignment="CENTER" />
                </center>
                <bottom>
-                  <HBox BorderPane.alignment="CENTER">
-                     <children>
-                        <Label text="Yhteensä: 12kpl" />
-                        <TextArea fx:id="areaTapahtumat" />
-                     </children>
-                  </HBox>
+                  <HBox BorderPane.alignment="CENTER" />
                </bottom>
                <top>
                   <Label text="Tapahtumat" BorderPane.alignment="CENTER" />
@@ -91,4 +91,7 @@
          </children>
       </HBox>
    </center>
+   <right>
+      <TextArea fx:id="areaTapahtumat" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

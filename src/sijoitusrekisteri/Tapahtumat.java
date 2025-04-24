@@ -56,6 +56,17 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
         lisaa(tapahtuma);
     }
     
+    /**
+     * @param tapahtuma poista
+     * @return poistaa tapahtuman
+     */
+    public boolean poista(Tapahtuma tapahtuma) {
+        boolean ret = alkiot.remove(tapahtuma);
+        if (ret) muutettu = true;
+        return ret;
+    }
+
+    
     
     /**
      * Poistaa kaikki tietyn tietyn sijoituksen tapahtumat
@@ -282,6 +293,20 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
         for (Tapahtuma tap : alkiot)
             if (tap.getSijoitusNro() == tunnusnro) loydetyt.add(tap);
         return loydetyt;
+    }
+    
+    /**
+     * Tarkistaa onko tapahtuma jo olemassa
+     * @param tapahtuma tarkistettava tapahtuma
+     * @return true jos löytyy, false jos ei
+     */
+    public boolean contains(Tapahtuma tapahtuma) {
+        for (Tapahtuma tap : alkiot) {
+            if (tap.getTunnusNro() == tapahtuma.getTunnusNro()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**

@@ -117,6 +117,12 @@ public class Sijoitusrekisteri {
        return ret; 
    }
 
+    /**
+     * @param tapahtuma pistaa tapahtuman
+    */
+    public void poistaTapahtuma(Tapahtuma tapahtuma) { 
+           tapahtumat.poista(tapahtuma); 
+       } 
 
 
 
@@ -203,6 +209,18 @@ public class Sijoitusrekisteri {
             virhe += ex.getMessage();
         }
         if ( !"".equals(virhe) ) throw new SailoException(virhe);
+    }
+    
+    /**
+     * Korvaa tapahtuman tai lisää uuden jos ei ole
+     * @param tapahtuma lisättävä/korvattava tapahtuma
+     * @throws SailoException jos tulee ongelmia
+     */
+    public void korvaaTaiLisaa(Tapahtuma tapahtuma) throws SailoException {
+        tapahtumat.muutatapNimi(tapahtuma, tapahtuma.getNimi());
+        if (!tapahtumat.contains(tapahtuma)) {
+            lisaa(tapahtuma);
+        }
     }
 
 

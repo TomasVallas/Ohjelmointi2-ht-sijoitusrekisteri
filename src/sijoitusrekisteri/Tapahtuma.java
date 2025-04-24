@@ -10,7 +10,8 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @version 17.3.2025
  *
  */
-public class Tapahtuma {
+public class Tapahtuma implements Cloneable, Tietue {
+    // Nykyiset kentät säilyvät
     private int tunnusNro;
     private int sijoitusNro;
     private String tapahtumannimi;
@@ -25,6 +26,103 @@ public class Tapahtuma {
     private int jaljella;
 
     private static int seuraavaNro = 1;
+
+    /**
+     * @return harrastukse kenttien lukumäärä
+     */
+
+    @Override
+    public int getKenttia() {
+        return 12; // Kaikki kentät mukaan lukien tunnusNro ja sijoitusNro
+    }
+    /**
+     * @return ensimmäinen käyttäjän syötettävän kentän indeksi
+     */
+
+    @Override
+    public int ekaKentta() {
+        return 2; // Ensimmäinen käyttäjän syötettävä kenttä (tapahtumannimi)
+    }
+    /**
+     * @param k minkä kentän kysymys halutaan
+     * @return valitun kentän kysymysteksti
+     */
+
+    @Override
+    public String getKysymys(int k) {
+        switch (k) {
+            case 0: return "Tunnusnro";
+            case 1: return "Sijoitusnro";
+            case 2: return "Nimi";
+            case 3: return "Ostopäivä";
+            case 4: return "Ostohinta";
+            case 5: return "Ostomäärä";
+            case 6: return "Kurssi";
+            case 7: return "Myyntipäivä";
+            case 8: return "Myyntikurssi";
+            case 9: return "Myyntimäärä";
+            case 10: return "Tuotto";
+            case 11: return "Jäljellä";
+            default: return "???";
+        }
+    }
+
+    /**
+     * @param k Minkä kentän sisältö halutaan
+     * @return valitun kentän sisältö
+    */
+    @Override
+    public String anna(int k) {
+        switch (k) {
+            case 0: return "" + tunnusNro;
+            case 1: return "" + sijoitusNro;
+            case 2: return tapahtumannimi;
+            case 3: return "" + ostopv;
+            case 4: return "" + ostohinta;
+            case 5: return "" + ostomaara;
+            case 6: return "" + kurssi;
+            case 7: return "" + myyntipv;
+            case 8: return "" + myyntikurssi;
+            case 9: return "" + myyntimaara;
+            case 10: return "" + tuotto;
+            case 11: return "" + jaljella;
+            default: return "???";
+        }
+    }
+    /**
+     * Asetetaan valitun kentän sisältö.  Mikäli asettaminen onnistuu,
+     * palautetaan null, muutoin virheteksti.
+     * @param k minkä kentän sisältö asetetaan
+     * @param s asetettava sisältö merkkijonona
+     * @return null jos ok, muuten virheteksti
+     */
+    @Override
+    public String aseta(int k, String s) {
+        String st = s.trim();
+        StringBuffer sb = new StringBuffer(st);
+        switch (k) {
+            case 0: setTunnusNro(Mjonot.erota(sb, '$', getTunnusNro())); return null;
+            case 1: sijoitusNro = Mjonot.erota(sb, '$', sijoitusNro); return null;
+            case 2: tapahtumannimi = st; return null;
+            case 3: ostopv = Mjonot.erota(sb, '$', ostopv); return null;
+            case 4: ostohinta = Mjonot.erota(sb, '$', ostohinta); return null;
+            case 5: ostomaara = Mjonot.erota(sb, '$', ostomaara); return null;
+            case 6: kurssi = Mjonot.erota(sb, '$', kurssi); return null;
+            case 7: myyntipv = Mjonot.erota(sb, '$', myyntipv); return null;
+            case 8: myyntikurssi = Mjonot.erota(sb, '$', myyntikurssi); return null;
+            case 9: myyntimaara = Mjonot.erota(sb, '$', myyntimaara); return null;
+            case 10: tuotto = Mjonot.erota(sb, '$', tuotto); return null;
+            case 11: jaljella = Mjonot.erota(sb, '$', jaljella); return null;
+            default: return "Väärä kentän indeksi";
+        }
+    }
+
+    @Override
+    public Tapahtuma clone() throws CloneNotSupportedException {
+        return (Tapahtuma)super.clone();
+    }
+    
+    // Muut metodit säilyvät ennallaan
     
     /**
      * Alustetaan tapahtuma.  Toistaiseksi ei tarvitse tehdä mitään
@@ -32,6 +130,69 @@ public class Tapahtuma {
     public Tapahtuma() {
         // Vielä ei tarvita mitään
     }
+    
+    /**
+     * @return ostopv
+     */
+    public int getOstopv() { 
+        return ostopv; 
+        }
+    
+    /**
+     * @return ostohinta
+     */
+    public int getOstohinta() { 
+        return ostohinta; 
+        }
+    
+    /**
+     * @return ostomaara
+     */
+    public int getOstomaara() { 
+        return ostomaara; 
+        }
+    
+    /**
+     * @return kurssi
+     */
+    public int getKurssi() { 
+        return kurssi; 
+        }
+    
+    /**
+     * @return myyntipv
+     */
+    public int getMyyntipv() { 
+        return myyntipv; 
+        }
+    
+    /**
+     * @return myyntikurssi
+     */
+    public int getMyyntikurssi() { 
+        return myyntikurssi; 
+        }
+    
+    /**
+     * @return myyntimaara
+     */
+    public int getMyyntimaara() { 
+        return myyntimaara; 
+        }
+    
+    /**
+     * @return tuotto
+     */
+    public int getTuotto() { 
+        return tuotto; 
+        }
+    
+    /**
+     * @return jaljella
+     */
+    public int getJaljella() { 
+        return jaljella; 
+        }
     
     
     /**
