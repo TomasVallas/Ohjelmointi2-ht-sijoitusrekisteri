@@ -90,6 +90,37 @@ public class Sijoitukset implements Iterable<Sijoitus> {
         }
     }
     
+    
+    /** 
+     * Poistaa sijoituksen jolla on valittu tunnusnumero  
+     * @param id poistettavan sijoituksen tunnusnumero 
+     * @return 1 jos poistettiin, 0 jos ei löydy 
+     * @example 
+     */ 
+    public int poista(int id) { 
+        int ind = etsiId(id); 
+        if (ind < 0) return 0; 
+        lkm--; 
+        for (int i = ind; i < lkm; i++) 
+            alkiot[i] = alkiot[i + 1]; 
+        alkiot[lkm] = null; 
+        muutettu = true; 
+        return 1; 
+    } 
+    
+    /**
+     * @param id tunnusnumero
+     * @return löytyneen sijoituksen indeksi tai -1 jos ei löydy 
+     */
+    public int etsiId(int id) { 
+        for (int i = 0; i < lkm; i++) 
+            if (id == alkiot[i].getTunnusNro()) return i; 
+        return -1; 
+    } 
+
+
+    
+    
     /**
      * Palauttaa viitteen i:teen sijoitukseen.
      * @param i monennenko sijoituksen viite halutaan

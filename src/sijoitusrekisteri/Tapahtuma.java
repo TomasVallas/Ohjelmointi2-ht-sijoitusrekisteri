@@ -134,6 +134,27 @@ public class Tapahtuma {
         return tapahtumannimi;
     }
     
+    
+    /**
+     * @param nro sijoituksen numero
+     * @param uusiTapahtumaNimi nimi joksi sijoituksen nimi muutetaan
+     */
+    public void asetatapNimi(int nro, String uusiTapahtumaNimi) {
+        sijoitusNro = nro;
+        tapahtumannimi = uusiTapahtumaNimi;
+    }
+    
+    
+    
+    /**
+     * @param uusiTapahtumaNimi nimi joksi sijoituksen nimi muutetaan
+     */
+    public void muutatapNimi( String uusiTapahtumaNimi) {
+        tapahtumannimi = uusiTapahtumaNimi;
+    }
+    
+    
+    
     /**
      * Asettaa tunnusnumeron ja samalla varmistaa että
      * seuraava numero on aina suurempi kuin tähän mennessä suurin.

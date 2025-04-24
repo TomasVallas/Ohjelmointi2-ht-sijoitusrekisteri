@@ -83,11 +83,11 @@ public class SijoitusrekisteriGUIController implements Initializable {
     
 
     
-    @FXML private void handlePoista() {
-        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
-                "Poista sijoitus: SIJOITUKSEN NIMI", "Kyllä", "Ei");
-        if ( vastaus ); //poistaJasen(...
+    @FXML private void handlePoistaSijoitus() {
+        poistaSijoitus();
     }
+    
+
     
     @FXML private void handleMuokkaa() {
         Dialogs.showMessageDialog("Muokkaus ei toimi vielä");
@@ -125,7 +125,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
     }
     
     @FXML private void handleUusiTapahtuma() {
-        uusiTapahtuma();  
+        String uusiTapahtumaNimi = Dialogs.showInputDialog("Anna tapahtuman nimi", "");
+        if (uusiTapahtumaNimi == null) return;
+        uusiTapahtuma(uusiTapahtumaNimi);
     }
     
 
@@ -136,7 +138,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
     }
     
     @FXML private void handleMuokkaaTapahtuma() {
-        ModalController.showModal(SijoitusrekisteriGUIController.class.getResource("SijoitusrekisteriLisaasijoitus.fxml"), "Tapahtuma", null, "");
+        String uusiTapahtumaNimi = Dialogs.showInputDialog("Muuta tapahtuman nimeä", chooserTapahtumat.getSelectedObject().getNimi());
+        if (uusiTapahtumaNimi == null) return;
+        muokkaatap(uusiTapahtumaNimi);
     }
     
 
@@ -326,12 +330,13 @@ public class SijoitusrekisteriGUIController implements Initializable {
     
     /** 
      * Tekee uuden tyhjän tapahtunman editointia varten 
+     * @param tapahtumannimi uusi tapahtuma
      */ 
-    public void uusiTapahtuma() { 
+    public void uusiTapahtuma(String tapahtumannimi) { 
         if ( sijoitusKohdalla == null ) return;  
         Tapahtuma tap = new Tapahtuma();  
         tap.rekisteroi();  
-        tap.vastaaBitcoin(sijoitusKohdalla.getTunnusNro());  
+        tap.asetatapNimi(sijoitusKohdalla.getTunnusNro(), tapahtumannimi);  
         try {
             sijoitusrekisteri.lisaa(tap);
         } catch (SailoException e) {
@@ -358,6 +363,27 @@ public class SijoitusrekisteriGUIController implements Initializable {
         sijoitusKohdalla.muutaNimi(uusiSijoitusNimi); // tai setNimi(...)
         hae(sijoitusKohdalla.getTunnusNro()); // päivitä näkymä
     }
+    
+    private void muokkaatap(String uusiTapahtumaNimi) {
+        if (tapahtumaKohdalla == null) return;
+        sijoitusrekisteri.muutaTapahtumaNimi(tapahtumaKohdalla, uusiTapahtumaNimi); // tai setNimi(...)
+        haeT(tapahtumaKohdalla.getTunnusNro()); // päivitä näkymä
+    }
+    
+    /*
+     * Poistetaan listalta valittu sijoitus
+     */
+    private void poistaSijoitus() {
+        Sijoitus sijoitus = sijoitusKohdalla;
+        if ( sijoitus == null ) return;
+        if ( !Dialogs.showQuestionDialog("Poisto", "Poistetaanko palvelu: " + sijoitus.getsijoitusNimi(), "Kyllä", "Ei") )
+            return;
+        sijoitusrekisteri.poista(sijoitus);
+        int index = chooserSijoitukset.getSelectedIndex();
+        hae(0);
+        chooserSijoitukset.setSelectedIndex(index);
+    }
+
 
     
     /**

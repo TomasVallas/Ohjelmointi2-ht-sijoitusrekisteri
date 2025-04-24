@@ -39,6 +39,43 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
         alkiot.add(tap);
         muutettu = true;
     }
+    
+    /**
+     * @param tapahtuma tapahtuma, jonka nimeä muutetaan
+     * @param uusiTapahtumaNimi pellon uusi nimi
+     */
+    public void muutatapNimi(Tapahtuma tapahtuma, String uusiTapahtumaNimi) {
+        int nro = tapahtuma.getTunnusNro();
+        for (Tapahtuma tap : alkiot) {
+            if (tap.getTunnusNro() == nro) {
+                tap.muutatapNimi(uusiTapahtumaNimi);
+                muutettu = true;
+                return;                
+            }
+        }
+        lisaa(tapahtuma);
+    }
+    
+    
+    /**
+     * Poistaa kaikki tietyn tietyn sijoituksen tapahtumat
+     * @param tunnusNro viite siihen, mihin liittyvät tietueet poistetaan
+     * @return montako poistettiin 
+    */
+   public int poistaSijoituksenTapahtumat(int tunnusNro) {
+       int n = 0;
+       for (Iterator<Tapahtuma> it = alkiot.iterator(); it.hasNext();) {
+           Tapahtuma tap = it.next();
+           if ( tap.getSijoitusNro() == tunnusNro ) {
+               it.remove();
+               n++;
+           }
+       }
+       if (n > 0) muutettu = true;
+       return n;
+   }
+
+
  
     /**
      * Lukee tapahtumat tiedostosta.  

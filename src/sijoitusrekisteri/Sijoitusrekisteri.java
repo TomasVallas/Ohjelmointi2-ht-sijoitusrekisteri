@@ -95,6 +95,29 @@ public class Sijoitusrekisteri {
     public void lisaa(Tapahtuma tap) throws SailoException {
         tapahtumat.lisaa(tap);
     }
+    
+    /**
+     * @param tapahtuma tapahtuma jonka nimeä muutetaan
+     * @param uusiTapahtumaNimi nimi joka muokatessa annetaan tapahtumalle
+     */
+    public void muutaTapahtumaNimi(Tapahtuma tapahtuma, String uusiTapahtumaNimi) {
+        tapahtumat.muutatapNimi(tapahtuma, uusiTapahtumaNimi);
+    }
+    
+    
+    /**
+     * Poistaa jäsenistöstä ja harrasteista jäsenen tiedot 
+     * @param sijoitus jäsen jokapoistetaan
+     * @return montako jäsentä poistettiin
+    */
+   public int poista(Sijoitus sijoitus) {
+       if ( sijoitus == null ) return 0;
+       int ret = sijoitukset.poista(sijoitus.getTunnusNro()); 
+       tapahtumat.poistaSijoituksenTapahtumat(sijoitus.getTunnusNro()); 
+       return ret; 
+   }
+
+
 
 
 

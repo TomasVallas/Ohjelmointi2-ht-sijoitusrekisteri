@@ -35,10 +35,16 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaSijoitus" text="Muokkaa" />
-              <MenuItem mnemonicParsing="false" onAction="#handlePoista" text="Poista" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaSijoitus" text=" Muokkaa palvelut" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaTapahtuma" text="Muokkaa tapahtumat" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Poista">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handlePoistaSijoitus" text="Poista palvelu" />
+                  <MenuItem mnemonicParsing="false" text="Poista tapahtuma" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
