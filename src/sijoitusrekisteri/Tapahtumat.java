@@ -10,8 +10,10 @@ import java.util.*;
 
 
 /**
+ * Sijoitusrekisterin tapahtumat, joka osaa mm. lisätä uuden harrastuksen
+ * 
  * @author valla
- * @version 17.3.2025
+ * @version 25.4.2025
  *
  */
 public class Tapahtumat implements Iterable<Tapahtuma> {
@@ -40,6 +42,7 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
         muutettu = true;
     }
     
+    
     /**
      * @param tapahtuma tapahtuma, jonka nimeä muutetaan
      * @param uusiTapahtumaNimi pellon uusi nimi
@@ -56,15 +59,6 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
         lisaa(tapahtuma);
     }
     
-//    /**
-//     * @param tapahtuma poista
-//     * @return poistaa tapahtuman
-//     */
-//    public boolean poista(Tapahtuma tapahtuma) {
-//        boolean ret = alkiot.remove(tapahtuma);
-//        if (ret) muutettu = true;
-//        return ret;
-//    }
     
     /**
      * @param tunnusNro tunnusnro

@@ -6,8 +6,10 @@ import fi.jyu.mit.ohj2.Mjonot;
 
 
 /**
+ * Tapahtuma joka osaa mm. itse huolehtia tunnus_nro:staan.
+ * 
  * @author valla
- * @version 17.3.2025
+ * @version 25.4.2025
  *
  */
 public class Tapahtuma implements Cloneable, Tietue {

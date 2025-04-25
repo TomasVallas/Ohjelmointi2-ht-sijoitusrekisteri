@@ -17,8 +17,10 @@ import fi.jyu.mit.fxgui.Dialogs;
 
 
 /**
- * @author valla
- * @version 16.3.2025
+ * Sijoitusrekisterin sijoitukset joka osaa mm. lisätä uuden sijoituksen
+ * 
+ * @author vallas
+ * @version 25.4.2025
  *
  */
 public class Sijoitukset implements Iterable<Sijoitus> {
@@ -160,7 +162,7 @@ public class Sijoitukset implements Iterable<Sijoitus> {
      *  Iterator<Sijoitus> i = sijoitukset.iterator();
      *  i.next() === Binance1;
      *  i.next() === Binance2;
-     *  i.hasNext() === false;
+     *  i.hasNext() === true;
      *  sijoitukset.lisaa(Binance2);
      *  sijoitukset.tallenna();
      *  ftied.delete() === true;

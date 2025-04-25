@@ -4,8 +4,8 @@ package sijoitusrekisteri;
 /**
  * Rajapinta tietueelle johon voidaan taulukon avulla rakentaa 
  * "attribuutit".
- * @author vesal
- * @version Mar 23, 2012
+ * @author vallas
+ * @version 25.4.2025
  * @example
  */
 public interface Tietue {
@@ -15,9 +15,9 @@ public interface Tietue {
      * @return tietueen kenttien lukumäärä
      * @example
      * <pre name="test">
-     *   #import kerho.Harrastus;
-     *   Harrastus har = new Harrastus();
-     *   har.getKenttia() === 5;
+     *   #import sijoitusrekisteri.Tapahtuma;
+     *   Tapahtuma tap = new Tapahtuma();
+     *   tap.getKenttia() === 12;
      * </pre>
      */
     public abstract int getKenttia();
@@ -27,8 +27,8 @@ public interface Tietue {
      * @return ensimmäinen käyttäjän syötettävän kentän indeksi
      * @example
      * <pre name="test">
-     *   Harrastus har = new Harrastus();
-     *   har.ekaKentta() === 2;
+     *   Tapahtuma tap = new Tapahtuma();
+     *   tap.ekaKentta() === 2;
      * </pre>
      */
     public abstract int ekaKentta();
@@ -39,8 +39,8 @@ public interface Tietue {
      * @return valitun kentän kysymysteksti
      * @example
      * <pre name="test">
-     *   Harrastus har = new Harrastus();
-     *   har.getKysymys(2) === "ala";
+     *   Tapahtuma tap = new Tapahtuma();
+     *   tap.getKysymys(2) === "Nimi";
      * </pre>
      */
     public abstract String getKysymys(int k);
@@ -51,13 +51,13 @@ public interface Tietue {
      * @return valitun kentän sisältö
      * @example
      * <pre name="test">
-     *   Harrastus har = new Harrastus();
-     *   har.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
-     *   har.anna(0) === "2";   
-     *   har.anna(1) === "10";   
-     *   har.anna(2) === "Kalastus";   
-     *   har.anna(3) === "1949";   
-     *   har.anna(4) === "22";   
+     *   Tapahtuma tap = new Tapahtuma();
+     *   tap.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
+     *   tap.anna(0) === "2";   
+     *   tap.anna(1) === "10";   
+     *   tap.anna(2) === "Kalastus";   
+     *   tap.anna(3) === "1949";   
+     *   tap.anna(4) === "22";   
      * </pre>
      */
     public abstract String anna(int k);
@@ -71,11 +71,11 @@ public interface Tietue {
      * @return null jos ok, muuten virheteksti
      * @example
      * <pre name="test">
-     *   Harrastus har = new Harrastus();
-     *   har.aseta(3,"kissa") === "aloitusvuosi: Ei kokonaisluku (kissa)";
-     *   har.aseta(3,"1940")  === null;
-     *   har.aseta(4,"kissa") === "h/vko: Ei kokonaisluku (kissa)";
-     *   har.aseta(4,"20")    === null;
+     *   Tapahtuma tap = new Tapahtuma();
+     *   tap.aseta(3,"kissa") === null;
+     *   tap.aseta(3,"1940")  === null;
+     *   tap.aseta(4,"kissa") === null;
+     *   tap.aseta(4,"20")    === null;
      * </pre>
      */
     public abstract String aseta(int k, String s);
@@ -88,13 +88,13 @@ public interface Tietue {
      * @example
      * <pre name="test">
      * #THROWS CloneNotSupportedException 
-     *   Harrastus har = new Harrastus();
-     *   har.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
-     *   Object kopio = har.clone();
-     *   kopio.toString() === har.toString();
-     *   har.parse("   1   |  11  |   Uinti  | 1949 | 22 t ");
-     *   kopio.toString().equals(har.toString()) === false;
-     *   kopio instanceof Harrastus === true;
+     *   Tapahtuma tap = new Tapahtuma();
+     *   tap.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
+     *   Object kopio = tap.clone();
+     *   kopio.toString() === tap.toString();
+     *   tap.parse("   1   |  11  |   Uinti  | 1949 | 22 t ");
+     *   kopio.toString().equals(tap.toString()) === false;
+     *   kopio instanceof Tapahtuma === true;
      * </pre>
      */
     public abstract Tietue clone() throws CloneNotSupportedException;
@@ -105,9 +105,9 @@ public interface Tietue {
      * @return tietue tolppaeroteltuna merkkijonona 
      * @example
      * <pre name="test">
-     *   Harrastus harrastus = new Harrastus();
-     *   harrastus.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
-     *   harrastus.toString()    =R= "2\\|10\\|Kalastus\\|1949\\|22.*";
+     *   Tapahtuma tapahtuma = new Tapahtuma();
+     *   tapahtuma.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
+     *   tapahtuma.toString()    =R= "2\\|10\\|Kalastus\\|1949\\|22.*";
      * </pre>
      */
     @Override

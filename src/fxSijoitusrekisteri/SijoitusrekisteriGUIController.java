@@ -25,8 +25,10 @@ import javafx.scene.control.TextArea;
 
 
 /**
+ * Luokka sijoitusrekisterin käyttöliittymän tapahtumien hoitamiseksi.
+ * 
  * @author valla
- * @version 2.2.2025
+ * @version 25.4.2025
  *
  */
 public class SijoitusrekisteriGUIController implements Initializable {
@@ -144,7 +146,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
 
 
     /**
-     * naytaSijoitus
+     * Näyttää sijoituksen
      */
     protected void naytaSijoitus() {
         sijoitusKohdalla = chooserSijoitukset.getSelectedObject();
@@ -154,8 +156,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
         naytaTapahtumat(sijoitusKohdalla);
     }
     
+    
     /**
-     * naytaTapahtuma
+     * Näyttää Tapahtuman
      */
     protected void naytaTapahtuma() {
         Tapahtuma tap = chooserTapahtumat.getSelectedObject();
@@ -176,6 +179,10 @@ public class SijoitusrekisteriGUIController implements Initializable {
         areaTapahtumat.appendText("Jäljellä: " + tap.getJaljella() + "\n");
     }
     
+    
+    /**
+     * Näyttää Tapahtumat
+     */
     private void naytaTapahtumat(Sijoitus sijoitus) {
         tapahtumaGrid.clear();
         if (sijoitus == null) return;
@@ -189,7 +196,11 @@ public class SijoitusrekisteriGUIController implements Initializable {
             naytaTapahtumaGridissa(tap);
         }
     }
+    
 
+    /**
+     * Näyttää Tapahtumat gridissä
+     */
     private void naytaTapahtumaGridissa(Tapahtuma tap) {
         String[] rivi = {
             tap.getNimi(),
@@ -261,6 +272,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         hae(uusi.getTunnusNro());
     }
     
+    
     /**
      * Luo uuden tapahtuman jota aletaan editoimaan 
      */
@@ -279,6 +291,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
             Dialogs.showMessageDialog("Lisääminen epäonnistui: " + e.getMessage());
         }
     }
+    
     
     /**
      * Muokkaa valittua tapahtumaa.
@@ -313,8 +326,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Tallennusvirhe: " + e.getMessage());
         }
-    }
-    
+    }   
 
     
     /*
@@ -336,11 +348,16 @@ public class SijoitusrekisteriGUIController implements Initializable {
         naytaTapahtumat(sijoitusKohdalla);
     }
 
+       
+    /*
+     * Muokataan valittua sijoitusta
+     */
     private void muokkaa(String uusiNimi) {
         if (sijoitusKohdalla == null) return;
         sijoitusKohdalla.muutaNimi(uusiNimi);
         hae(sijoitusKohdalla.getTunnusNro());
     }
+    
     
     /*
      * Poistetaan listalta valittu sijoitus
@@ -356,6 +373,11 @@ public class SijoitusrekisteriGUIController implements Initializable {
         chooserSijoitukset.setSelectedIndex(index);
     }
 
+    
+    /**
+     * Tietojen tallennus
+     * @return null jos onnistuu, muuten virhe tekstinä
+     */
     private String tallenna() {
         try {
             sijoitusrekisteri.tallenna();
@@ -366,6 +388,10 @@ public class SijoitusrekisteriGUIController implements Initializable {
         }
     }
     
+    
+    /*
+     * Lajittelee sijoitukset aakkosjärjestykseen napin painalluksella
+     */
     private void lajitteleJaPaivitaSijoitukset() {
         List<Sijoitus> sijoitukset = new ArrayList<>();
         for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
@@ -389,6 +415,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         }
     }
     
+    
     /**
      * Tarkistaa, onko tallennus tehty.
      * @return true, jos sovelluksen voi sulkea, false muuten
@@ -397,6 +424,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         tallenna();
         return true;
     }
+    
     
     /**
      * Lataa sijoitusrekisterin tiedot annetusta tiedostosta.
@@ -431,8 +459,9 @@ public class SijoitusrekisteriGUIController implements Initializable {
         }
     }
 
+    
     /**
-     * @param sijoitusrekisteri rekisteri
+     * @param sijoitusrekisteri Sijoitusrekisteri jota käytetään tässä käyttöliittymässä
      */
     public void setSijoitusrekisteri(Sijoitusrekisteri sijoitusrekisteri) {
         this.sijoitusrekisteri = sijoitusrekisteri;

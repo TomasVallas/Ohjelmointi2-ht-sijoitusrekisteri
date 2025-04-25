@@ -3,8 +3,11 @@ import java.util.List;
 import java.util.Collection;
 
 /**
- * @author valla
- * @version 16.3.2025
+ * Sijoitusrekisteri-luokka, joka huolehtii sijoituksusta.  Pääosin kaikki metodit
+ * ovat vain "välittäjämetodeja" sijoituksiin.
+ *
+ * @author vallas
+ * @version 25.4.2025
  *
  */
 public class Sijoitusrekisteri {
@@ -212,17 +215,7 @@ public class Sijoitusrekisteri {
         if ( !"".equals(virhe) ) throw new SailoException(virhe);
     }
     
-//    /**
-//     * Korvaa tapahtuman tai lisää uuden jos ei ole
-//     * @param tapahtuma lisättävä/korvattava tapahtuma
-//     * @throws SailoException jos tulee ongelmia
-//     */
-//    public void korvaaTaiLisaa(Tapahtuma tapahtuma) throws SailoException {
-//        tapahtumat.muutatapNimi(tapahtuma, tapahtuma.getNimi());
-//        if (!tapahtumat.contains(tapahtuma)) {
-//            lisaa(tapahtuma);
-//        }
-//    }
+
     
     /**
      * Korvaa tapahtuman tai lisää uuden jos ei ole

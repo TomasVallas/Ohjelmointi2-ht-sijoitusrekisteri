@@ -4,8 +4,10 @@ import java.util.Random;
 import fi.jyu.mit.ohj2.Mjonot;
 
 /**
+ * Sijoitusrekisterin sijoitus joka osaa mm. itse huolehtia tunnusNro:staan.
+ * 
  * @author valla
- * @version 16.3.2025
+ * @version 25.4.2025
  *
  */
 public class Sijoitus {
