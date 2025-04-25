@@ -117,13 +117,14 @@ public class Sijoitusrekisteri {
        return ret; 
    }
 
-    /**
-     * @param tapahtuma pistaa tapahtuman
+   /**
+    * Poistaa annetun tapahtuman rekisteristä
+    * @param tapahtuma poistettava tapahtuma
     */
-    public void poistaTapahtuma(Tapahtuma tapahtuma) { 
-           tapahtumat.poista(tapahtuma); 
-       } 
-
+   public void poistaTapahtuma(Tapahtuma tapahtuma) { 
+       if (tapahtuma == null) return;
+       tapahtumat.poista(tapahtuma.getTunnusNro()); 
+   }
 
 
 
@@ -211,16 +212,26 @@ public class Sijoitusrekisteri {
         if ( !"".equals(virhe) ) throw new SailoException(virhe);
     }
     
+//    /**
+//     * Korvaa tapahtuman tai lisää uuden jos ei ole
+//     * @param tapahtuma lisättävä/korvattava tapahtuma
+//     * @throws SailoException jos tulee ongelmia
+//     */
+//    public void korvaaTaiLisaa(Tapahtuma tapahtuma) throws SailoException {
+//        tapahtumat.muutatapNimi(tapahtuma, tapahtuma.getNimi());
+//        if (!tapahtumat.contains(tapahtuma)) {
+//            lisaa(tapahtuma);
+//        }
+//    }
+    
     /**
      * Korvaa tapahtuman tai lisää uuden jos ei ole
      * @param tapahtuma lisättävä/korvattava tapahtuma
      * @throws SailoException jos tulee ongelmia
      */
     public void korvaaTaiLisaa(Tapahtuma tapahtuma) throws SailoException {
-        tapahtumat.muutatapNimi(tapahtuma, tapahtuma.getNimi());
-        if (!tapahtumat.contains(tapahtuma)) {
-            lisaa(tapahtuma);
-        }
+        tapahtumat.poista(tapahtuma.getTunnusNro()); // Poistaa vanhan tunnusnumerolla
+        tapahtumat.lisaa(tapahtuma); // Lisää päivitetyn tapahtuman
     }
 
 

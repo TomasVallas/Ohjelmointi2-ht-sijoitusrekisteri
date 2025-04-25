@@ -56,15 +56,33 @@ public class Tapahtumat implements Iterable<Tapahtuma> {
         lisaa(tapahtuma);
     }
     
+//    /**
+//     * @param tapahtuma poista
+//     * @return poistaa tapahtuman
+//     */
+//    public boolean poista(Tapahtuma tapahtuma) {
+//        boolean ret = alkiot.remove(tapahtuma);
+//        if (ret) muutettu = true;
+//        return ret;
+//    }
+    
     /**
-     * @param tapahtuma poista
+     * @param tunnusNro tunnusnro
      * @return poistaa tapahtuman
      */
-    public boolean poista(Tapahtuma tapahtuma) {
-        boolean ret = alkiot.remove(tapahtuma);
-        if (ret) muutettu = true;
-        return ret;
-    }
+     // Tapahtumat.java
+        public boolean poista(int tunnusNro) {
+            Iterator<Tapahtuma> it = alkiot.iterator();
+            while (it.hasNext()) {
+                Tapahtuma tap = it.next();
+                if (tap.getTunnusNro() == tunnusNro) {
+                    it.remove();
+                    muutettu = true;
+                    return true;
+                }
+            }
+            return false;
+        }
 
     
     

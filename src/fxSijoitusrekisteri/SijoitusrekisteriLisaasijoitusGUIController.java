@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import sijoitusrekisteri.Tapahtuma;
 import sijoitusrekisteri.Tietue;
 
 
@@ -101,9 +100,8 @@ public class SijoitusrekisteriLisaasijoitusGUIController<TYPE extends Tietue> im
         edits = luoKentat(gridTietue, tietueKohdalla);
         
         for (TextField edit : edits)
-            if ( edit != null )
-                edit.setOnKeyReleased( e -> kasitteleMuutosTietueeseen((TextField)(e.getSource())));
-        // panelTietue.setFitToHeight(true);
+            if (edit != null)
+                edit.setOnKeyReleased(e -> kasitteleMuutosTietueeseen((TextField)(e.getSource())));
     }
     
     

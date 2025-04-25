@@ -54,16 +54,16 @@ public class Tapahtuma implements Cloneable, Tietue {
             case 0: return "Tunnusnro";
             case 1: return "Sijoitusnro";
             case 2: return "Nimi";
-            case 3: return "Ostopäivä";
-            case 4: return "Ostohinta";
+            case 3: return "Ostopäivä (pvk)";
+            case 4: return "Ostohinta (€)";
             case 5: return "Ostomäärä";
-            case 6: return "Kurssi";
-            case 7: return "Myyntipäivä";
-            case 8: return "Myyntikurssi";
+            case 6: return "Kurssi (€)";
+            case 7: return "Myyntipäivä (pvk)";
+            case 8: return "Myyntikurssi (€)";
             case 9: return "Myyntimäärä";
-            case 10: return "Tuotto";
+            case 10: return "Tuotto (€)";
             case 11: return "Jäljellä";
-            default: return "???";
+            default: return "???"; 
         }
     }
 
@@ -202,6 +202,10 @@ public class Tapahtuma implements Cloneable, Tietue {
     public Tapahtuma(int sijoitusNro) {
         this.sijoitusNro = sijoitusNro;
     }
+    
+    
+    
+    
 
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot Tapahtumalle.

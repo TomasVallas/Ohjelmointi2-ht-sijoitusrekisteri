@@ -40,8 +40,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaSijoitus" text=" Muokkaa palvelut" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaTapahtuma" text="Muokkaa tapahtumat" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaSijoitus" text=" Muokkaa palvelua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaTapahtuma" text="Muokkaa tapahtumaa" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Poista">

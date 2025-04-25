@@ -34,51 +34,8 @@
                   <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <!-- Rows will be added dynamically -->
                </rowConstraints>
-               <children>
-                  <Label text="nimi" />
-                  <Label text="hetu" GridPane.rowIndex="1" />
-                  <Label text="katuosoite" GridPane.rowIndex="2" />
-                  <Label text="postinumero" GridPane.rowIndex="3" />
-                  <Label text="postiosoite" GridPane.rowIndex="4" />
-                  <Label text="kotipuhelin" GridPane.rowIndex="5" />
-                  <Label text="työpuhelin" GridPane.rowIndex="6" />
-                  <Label text="autopuhelin" GridPane.rowIndex="7" />
-                  <Label text="liittymisvuosi" GridPane.rowIndex="8" />
-                  <Label text="jäsenmaksu" GridPane.rowIndex="9" />
-                  <Label text="maksettu maksu" GridPane.rowIndex="10" />
-                  <Label text="lisätietoja" GridPane.rowIndex="11" />
-                  <TextField text="Ankka Aku" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                  <TextField text="010245-123U" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                  <TextField text="Paratiisitie 13" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                  <TextField text="12345" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-                  <TextField text="ANKKALINNA" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
-                  <TextField text="12-12345" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
-                  <TextField text="2" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
-                  <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
-                  <TextField text="1996" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
-                  <TextField text="50.00" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" />
-                  <TextField text="0.00" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" />
-                  <TextField text="Velkaa Roopelle" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" />
-               </children>
-               <opaqueInsets>
-                  <Insets left="10.0" top="10.0" />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="10.0" right="10.0" top="10.0" />
-               </padding>
             </GridPane>
          </content>
       </ScrollPane>
