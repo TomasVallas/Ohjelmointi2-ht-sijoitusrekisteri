@@ -75,7 +75,7 @@
                   <Label text="Kohteet" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <ListChooser fx:id="chooserTapahtumat" rivit="Nvidia&#10;Tesla&#10;Oracle&#10;" BorderPane.alignment="CENTER" />
+                  <ListChooser fx:id="chooserTapahtumat" prefHeight="417.0" prefWidth="208.0" rivit="Nvidia&#10;Tesla&#10;Oracle&#10;" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
             <BorderPane>
@@ -89,10 +89,15 @@
                   <Label text="Tapahtumat" BorderPane.alignment="CENTER" />
                </top>
             </BorderPane>
+            <BorderPane>
+               <center>
+                  <TextArea fx:id="areaTapahtumat" maxWidth="100.0" BorderPane.alignment="CENTER" />
+               </center>
+               <top>
+                  <Label text="Lisätiedot" BorderPane.alignment="CENTER" />
+               </top>
+            </BorderPane>
          </children>
       </HBox>
    </center>
-   <right>
-      <TextArea fx:id="areaTapahtumat" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>

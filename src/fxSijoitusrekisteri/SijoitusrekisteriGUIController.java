@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.*;
 import java.awt.Desktop;
@@ -132,7 +131,6 @@ public class SijoitusrekisteriGUIController implements Initializable {
         for (int i=0, k=eka; k<lkm; i++, k++) 
             headings[i] = aputapahtuma.getKysymys(k); 
         tapahtumaGrid.initTable(headings); 
-        tapahtumaGrid.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         tapahtumaGrid.setEditable(false); 
         tapahtumaGrid.setPlaceholder(new Label("Ei vielä tapahtumia")); 
         
