@@ -21,6 +21,7 @@ import sijoitusrekisteri.Tapahtuma;
 import sijoitusrekisteri.SailoException;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 
 
@@ -28,7 +29,7 @@ import javafx.scene.control.TextArea;
  * Luokka sijoitusrekisterin käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author valla
- * @version 25.4.2025
+ * @version .4.2025
  *
  */
 public class SijoitusrekisteriGUIController implements Initializable {
@@ -38,6 +39,8 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private StringGrid<Tapahtuma> tapahtumaGrid;
     @FXML private TextArea areaTapahtumat;
     @FXML private Label labelYhteensa;
+    @FXML private TextField hakukenttaSijoitukset;
+    @FXML private TextField hakukenttaTapahtumat;
     
 
     
@@ -46,9 +49,14 @@ public class SijoitusrekisteriGUIController implements Initializable {
         alusta();    
     }
   
-    @FXML private void handleHakuehto() {
-        if (sijoitusKohdalla != null)
-            hae(sijoitusKohdalla.getTunnusNro());
+    @FXML
+    private void handleHakuSijoitukset() {
+        HakuSijoitukset();
+    }
+
+    @FXML
+    private void handleHakuTapahtumat() {
+        HakuTapahtumat();
     }
     
     @FXML
@@ -107,6 +115,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private void handlePoistaTapahtuma() {
         poistaTapahtuma();
     }
+
     
     
     
@@ -153,6 +162,7 @@ public class SijoitusrekisteriGUIController implements Initializable {
         if (sijoitusKohdalla == null) return;
         
         haeT(sijoitusKohdalla.getTunnusNro());
+        hakukenttaTapahtumat.setText(""); // Nollaa Tapahtumat-hauun syötekentän
         naytaTapahtumat(sijoitusKohdalla);
     }
     
@@ -414,6 +424,40 @@ public class SijoitusrekisteriGUIController implements Initializable {
             }
         }
     }
+    
+    
+    /**
+     * Hakee sijoituksen
+     */
+    private void HakuSijoitukset() {
+        String hakuehto = hakukenttaSijoitukset.getText().toLowerCase();
+        chooserSijoitukset.clear();
+        for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
+            Sijoitus sijoitus = sijoitusrekisteri.annaSijoitukset(i);
+            if (sijoitus.getsijoitusNimi().toLowerCase().contains(hakuehto)) {
+                chooserSijoitukset.add(sijoitus.getsijoitusNimi(), sijoitus);
+            }
+        }
+    }
+    
+    
+    /**
+     * Hakee tapahtuman
+     */
+    private void HakuTapahtumat() {
+        String hakuehto = hakukenttaTapahtumat.getText().toLowerCase();
+        chooserTapahtumat.clear();
+        if (sijoitusKohdalla == null) return;
+        List<Tapahtuma> tapahtumat = sijoitusrekisteri.annaTapahtumat(sijoitusKohdalla);
+        for (Tapahtuma tap : tapahtumat) {
+            if (tap.getNimi().toLowerCase().contains(hakuehto)) {
+                chooserTapahtumat.add(tap.getNimi(), tap);
+            }
+        }
+    }
+    
+    
+
     
     
     /**
