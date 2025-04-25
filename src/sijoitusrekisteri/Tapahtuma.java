@@ -91,6 +91,28 @@ public class Tapahtuma implements Cloneable, Tietue {
             default: return "???";
         }
     }
+    
+    /**
+     * Palauttaa ostopäivän muotoiltuna merkkijonona xx.xx.xxxx
+     * @return muotoiltu päivämäärä tai "-", jos päivää ei ole asetettu
+     */
+    public String getOstopvStr() {
+        if (ostopv <= 0) return "-";
+        String date = String.format("%08d", ostopv);
+        return date.substring(0, 2) + "." + date.substring(2, 4) + "." + date.substring(4);
+    }
+    
+    /**
+     * Palauttaa myyntipäivän muotoiltuna merkkijonona xx.xx.xxxx
+     * @return muotoiltu päivämäärä tai "-", jos päivää ei ole asetettu
+     */
+    public String getMyyntipvStr() {
+        if (myyntipv <= 0) return "-";
+        String date = String.format("%08d", myyntipv);
+        return date.substring(0, 2) + "." + date.substring(2, 4) + "." + date.substring(4);
+    }
+    
+    
     /**
      * Asetetaan valitun kentän sisältö.  Mikäli asettaminen onnistuu,
      * palautetaan null, muutoin virheteksti.
@@ -106,11 +128,31 @@ public class Tapahtuma implements Cloneable, Tietue {
             case 0: setTunnusNro(Mjonot.erota(sb, '$', getTunnusNro())); return null;
             case 1: sijoitusNro = Mjonot.erota(sb, '$', sijoitusNro); return null;
             case 2: tapahtumannimi = st; return null;
-            case 3: ostopv = Mjonot.erota(sb, '$', ostopv); return null;
+            case 3: 
+                if (!st.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) { // Tarkista muoto xx.xx.xxxx
+                    return "Ostopäivän tulee olla muotoa xx.xx.xxxx";
+                }
+                st = st.replace(".", ""); // Poista pisteet
+                if (st.length() != 8) return "Ostopäivässä tulee olla tasan 8 numeroa";
+                sb = new StringBuffer(st);
+                ostopv = Mjonot.erota(sb, '$', ostopv);
+                return null;
             case 4: ostohinta = Mjonot.erota(sb, '$', ostohinta); return null;
             case 5: ostomaara = Mjonot.erota(sb, '$', ostomaara); return null;
             case 6: kurssi = Mjonot.erota(sb, '$', kurssi); return null;
-            case 7: myyntipv = Mjonot.erota(sb, '$', myyntipv); return null;
+            case 7:
+                if (st.isEmpty() || st.equals("-")) { // Salli tyhjä tai "-"
+                    myyntipv = 0;
+                    return null;
+                }
+                if (!st.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) { // Tarkista muoto
+                    return "Myyntipäivän tulee olla muotoa xx.xx.xxxx";
+                }
+                st = st.replace(".", "");
+                if (st.length() != 8) return "Myyntipäivässä tulee olla tasan 8 numeroa";
+                sb = new StringBuffer(st);
+                myyntipv = Mjonot.erota(sb, '$', myyntipv);
+                return null;
             case 8: myyntikurssi = Mjonot.erota(sb, '$', myyntikurssi); return null;
             case 9: myyntimaara = Mjonot.erota(sb, '$', myyntimaara); return null;
             case 10: tuotto = Mjonot.erota(sb, '$', tuotto); return null;

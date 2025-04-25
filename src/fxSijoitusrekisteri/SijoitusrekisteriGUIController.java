@@ -177,12 +177,12 @@ public class SijoitusrekisteriGUIController implements Initializable {
         areaTapahtumat.clear();
         areaTapahtumat.appendText("Tapahtuman tiedot:\n");
         areaTapahtumat.appendText("Nimi: " + tap.getNimi() + "\n");
-        areaTapahtumat.appendText("Ostopäivä: " + tap.getOstopv() + "\n");
+        areaTapahtumat.appendText("Ostopäivä: " + tap.getOstopvStr() + "\n"); // Muutos tähän
         areaTapahtumat.appendText("Ostohinta: " + tap.getOstohinta() + "€\n");
         areaTapahtumat.appendText("Määrä: " + tap.getOstomaara() + "\n");
         areaTapahtumat.appendText("Kurssi: " + tap.getKurssi() + "€\n");
         if (tap.getMyyntipv() > 0) {
-            areaTapahtumat.appendText("Myyntipäivä: " + tap.getMyyntipv() + "\n");
+            areaTapahtumat.appendText("Myyntipäivä: " + tap.getMyyntipvStr() + "\n"); // Muutos tähän
             areaTapahtumat.appendText("Myyntikurssi: " + tap.getMyyntikurssi() + "€\n");
             areaTapahtumat.appendText("Tuotto: " + tap.getTuotto() + "€\n");
         }
@@ -214,11 +214,11 @@ public class SijoitusrekisteriGUIController implements Initializable {
     private void naytaTapahtumaGridissa(Tapahtuma tap) {
         String[] rivi = {
             tap.getNimi(),
-            String.valueOf(tap.getOstopv()),
+            tap.getOstopvStr(), // Muutos tähän
             tap.getOstohinta() + "€",
             String.valueOf(tap.getOstomaara()),
             tap.getKurssi() + "€",
-            tap.getMyyntipv() > 0 ? String.valueOf(tap.getMyyntipv()) : "-",
+            tap.getMyyntipv() > 0 ? tap.getMyyntipvStr() : "-", // Muutos tähän
             tap.getMyyntipv() > 0 ? tap.getMyyntikurssi() + "€" : "-",
             tap.getMyyntipv() > 0 ? String.valueOf(tap.getMyyntimaara()) : "-",
             tap.getTuotto() + "€",
