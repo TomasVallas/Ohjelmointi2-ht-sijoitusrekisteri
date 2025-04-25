@@ -21,6 +21,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#handleUusiSijoitus" text="Uusi palvelu" />
             <Button mnemonicParsing="false" onAction="#handleUusiTapahtuma" text="Uusi tapahtuma" />
+            <Button mnemonicParsing="false" onAction="#handleLajitteleSijoitukset" text="Lajitele" />
             <Label fx:id="labelYhteensa" text="Yhteensä: 12kpl">
                <HBox.margin>
                   <Insets top="5.0" />

@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.control.Label;
@@ -46,6 +48,11 @@ public class SijoitusrekisteriGUIController implements Initializable {
     @FXML private void handleHakuehto() {
         if (sijoitusKohdalla != null)
             hae(sijoitusKohdalla.getTunnusNro());
+    }
+    
+    @FXML
+    private void handleLajitteleSijoitukset() {
+        lajitteleJaPaivitaSijoitukset();
     }
        
     @FXML private void handleMuokkaa() {
@@ -358,6 +365,29 @@ public class SijoitusrekisteriGUIController implements Initializable {
         } catch (SailoException ex) {
             Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
             return ex.getMessage();
+        }
+    }
+    
+    private void lajitteleJaPaivitaSijoitukset() {
+        List<Sijoitus> sijoitukset = new ArrayList<>();
+        for (int i = 0; i < sijoitusrekisteri.getSijoituksia(); i++) {
+            sijoitukset.add(sijoitusrekisteri.annaSijoitukset(i));
+        }
+        
+        sijoitukset.sort(Comparator.comparing(Sijoitus::getsijoitusNimi, String.CASE_INSENSITIVE_ORDER));
+        
+        int valittuTunnus = (sijoitusKohdalla != null) ? sijoitusKohdalla.getTunnusNro() : -1;
+        
+        chooserSijoitukset.clear();
+        sijoitukset.forEach(s -> chooserSijoitukset.add(s.getsijoitusNimi(), s));
+        
+        if (valittuTunnus != -1) {
+            for (int i = 0; i < sijoitukset.size(); i++) {
+                if (sijoitukset.get(i).getTunnusNro() == valittuTunnus) {
+                    chooserSijoitukset.setSelectedIndex(i);
+                    break;
+                }
+            }
         }
     }
     
